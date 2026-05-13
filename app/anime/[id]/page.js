@@ -1,6 +1,9 @@
 async function getAnime(id) {
   const res = await fetch(
-    `https://api.jikan.moe/v4/anime/${id}`
+    `https://api.jikan.moe/v4/anime/${id}`,
+    {
+      cache: "no-store",
+    }
   )
 
   const data = await res.json()
@@ -9,7 +12,17 @@ async function getAnime(id) {
 }
 
 export default async function AnimePage({ params }) {
-  const anime = await getAnime(params.id)
+  const { id } = await params
+
+  const anime = await getAnime(id)
+
+  if (!anime) {
+    return (
+      <main className="min-h-screen bg-black text-white flex items-center justify-center">
+        Anime not found.
+      </main>
+    )
+  }
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-20">
@@ -26,9 +39,9 @@ export default async function AnimePage({ params }) {
           </h1>
 
           <div className="flex gap-6 mb-8 text-lg flex-wrap">
-            <p>⭐ {anime.score}</p>
+            <p>⭐ {anime.score || "N/A"}</p>
 
-            <p>{anime.episodes} Episodes</p>
+            <p>{anime.episodes || "?"} Episodes</p>
 
             <p>{anime.status}</p>
           </div>
