@@ -20,14 +20,25 @@ export default async function WatchPage({ params }) {
     <main className="min-h-screen bg-black text-white px-6 py-10">
       <div className="max-w-7xl mx-auto">
 
-        {/* Video Player */}
-        <div className="w-full aspect-video rounded-3xl overflow-hidden border border-white/10 mb-10">
-          <iframe
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="Anime Player"
-            allowFullScreen
-            className="w-full h-full"
-          ></iframe>
+        {/* Trailer */}
+        <div className="w-full mb-10">
+
+          {anime.trailer?.embed_url ? (
+            <iframe
+              src={anime.trailer.embed_url}
+              width="100%"
+              height="500"
+              allowFullScreen
+              className="rounded-3xl border border-white/10"
+            ></iframe>
+          ) : (
+            <div className="h-[500px] flex items-center justify-center bg-[#111] rounded-3xl border border-white/10">
+              <p className="text-gray-400 text-xl">
+                No Trailer Available
+              </p>
+            </div>
+          )}
+
         </div>
 
         {/* Anime Info */}
@@ -60,7 +71,19 @@ export default async function WatchPage({ params }) {
               {anime.synopsis}
             </p>
 
-            {/* Fake Episodes */}
+            {/* Genres */}
+            <div className="flex gap-4 flex-wrap mb-10">
+              {anime.genres.map((genre) => (
+                <div
+                  key={genre.mal_id}
+                  className="px-4 py-2 rounded-full bg-purple-600"
+                >
+                  {genre.name}
+                </div>
+              ))}
+            </div>
+
+            {/* Episodes */}
             <div>
               <h2 className="text-3xl font-bold mb-6">
                 Episodes
@@ -77,8 +100,8 @@ export default async function WatchPage({ params }) {
                 ))}
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
     </main>
