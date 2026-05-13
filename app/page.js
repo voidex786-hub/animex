@@ -135,19 +135,37 @@ export default function Page() {
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 1 }}
-            className="flex flex-wrap justify-center gap-5 mt-10"
-          >
-            <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 font-semibold hover:-translate-y-1 transition shadow-[0_0_40px_rgba(168,85,247,0.4)] hover:scale-105">
-              Watch Now
-            </button>
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ delay: 0.7, duration: 1 }}
+  className="flex flex-wrap justify-center gap-5 mt-10"
+>
+  <button
+    onClick={() => {
+      document
+        .getElementById("anime")
+        ?.scrollIntoView({
+          behavior: "smooth",
+        })
+    }}
+    className="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 font-semibold hover:-translate-y-1 transition shadow-[0_0_40px_rgba(168,85,247,0.4)] hover:scale-105"
+  >
+    Watch Now
+  </button>
 
-            <button className="px-8 py-4 rounded-xl border border-white/10 bg-[#111] font-semibold hover:-translate-y-1 transition hover:bg-[#1a1a1a]">
-              Browse Anime
-            </button>
-          </motion.div>
+  <button
+    onClick={() => {
+      document
+        .getElementById("anime")
+        ?.scrollIntoView({
+          behavior: "smooth",
+        })
+    }}
+    className="px-8 py-4 rounded-xl border border-white/10 bg-[#111] font-semibold hover:-translate-y-1 transition hover:bg-[#1a1a1a]"
+  >
+    Browse Anime
+  </button>
+</motion.div>
         </div>
       </section>
 
