@@ -5,17 +5,35 @@ import { useEffect, useState } from "react"
 
 export default function Page() {
   const [animeList, setAnimeList] = useState([])
+  const [search, setSearch] = useState("")
 
   useEffect(() => {
-    async function fetchAnime() {
-      const res = await fetch("https://api.jikan.moe/v4/top/anime")
-      const data = await res.json()
+    fetchTopAnime()
+  }, [])
 
-      setAnimeList(data.data.slice(0, 10))
+  async function fetchTopAnime() {
+    const res = await fetch("https://api.jikan.moe/v4/top/anime")
+    const data = await res.json()
+
+    setAnimeList(data.data.slice(0, 10))
+  }
+
+  async function searchAnime(query) {
+    setSearch(query)
+
+    if (query.trim() === "") {
+      fetchTopAnime()
+      return
     }
 
-    fetchAnime()
-  }, [])
+    const res = await fetch(
+      `https://api.jikan.moe/v4/anime?q=${query}`
+    )
+
+    const data = await res.json()
+
+    setAnimeList(data.data.slice(0, 10))
+  }
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden relative">
@@ -32,8 +50,8 @@ export default function Page() {
         transition={{ duration: 0.8 }}
         className="fixed top-0 w-full z-50 backdrop-blur-md bg-black/40 border-b border-white/5"
       >
-        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-          <h1 className="text-2xl font-extrabold tracking-widest">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row gap-5 md:gap-0 items-center justify-between">
+          <h1 className="text-3xl font-extrabold tracking-widest">
             ANI<span className="text-purple-500">MEX</span>
           </h1>
 
@@ -63,6 +81,15 @@ export default function Page() {
               Anime
             </a>
           </div>
+
+          {/* Search */}
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => searchAnime(e.target.value)}
+            placeholder="Search anime..."
+            className="w-full md:w-[300px] px-5 py-3 rounded-2xl bg-[#111] border border-white/10 outline-none focus:border-purple-500 transition"
+          />
         </div>
       </motion.nav>
 
@@ -171,23 +198,17 @@ export default function Page() {
       {/* Trending Anime */}
       <section id="anime" className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true }}
-            className="flex items-center justify-between mb-16"
-          >
+          <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
             <div>
               <h2 className="text-5xl font-bold mb-3">
-                Trending Anime
+                {search ? `Results for "${search}"` : "Trending Anime"}
               </h2>
 
               <p className="text-gray-400">
                 Live anime data powered by Jikan API
               </p>
             </div>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
             {animeList.map((anime, index) => (
@@ -195,7 +216,7 @@ export default function Page() {
                 key={anime.mal_id}
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05 }}
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.05 }}
                 className="bg-[#0d0d0d] rounded-3xl overflow-hidden border border-white/5 hover:border-purple-500/40 transition"
@@ -213,7 +234,7 @@ export default function Page() {
 
                   <div className="flex items-center justify-between mt-3">
                     <p className="text-purple-400">
-                      ⭐ {anime.score}
+                      ⭐ {anime.score || "N/A"}
                     </p>
 
                     <p className="text-gray-500 text-sm">
@@ -241,9 +262,8 @@ export default function Page() {
             </h2>
 
             <p className="text-gray-400 leading-8 mb-10">
-              Built for speed and reliability. Watch anime in HD without
-              buffering, sync progress across devices, and enjoy a premium
-              viewing experience.
+              Built for speed and reliability. Watch anime in HD without buffering,
+              sync progress across devices, and enjoy a premium viewing experience.
             </p>
 
             <div className="flex flex-wrap gap-10">
@@ -285,6 +305,61 @@ export default function Page() {
               className="rounded-3xl border border-white/10 shadow-[0_0_40px_rgba(168,85,247,0.2)] hover:scale-[1.02] transition duration-500"
             />
           </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section id="reviews" className="py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold mb-5">What They Say...</h2>
+
+            <p className="text-gray-400">
+              Thousands of anime fans love using Animex every day.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                name: "Lmao",
+                text: "Animex has the cleanest anime streaming UI I have ever used.",
+              },
+              {
+                name: "Abadima",
+                text: "Fast loading, amazing dark design and smooth animations.",
+              },
+              {
+                name: "Yaromix",
+                text: "One of the best anime streaming websites visually.",
+              },
+            ].map((review, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                viewport={{ once: true }}
+                className="bg-[#0d0d0d] border border-white/5 rounded-3xl p-8 hover:border-purple-500/30 transition"
+              >
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-14 h-14 rounded-full bg-purple-500"></div>
+
+                  <div>
+                    <h4 className="font-semibold text-lg">
+                      {review.name}
+                    </h4>
+
+                    <p className="text-sm text-gray-500">@user</p>
+                  </div>
+                </div>
+
+                <p className="text-gray-300 leading-8">
+                  {review.text}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
