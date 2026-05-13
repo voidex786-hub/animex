@@ -1,6 +1,10 @@
+"use client"
+
+import { motion } from "framer-motion"
+
 export default function Page() {
   return (
-    <main className="bg-black text-white min-h-screen overflow-x-hidden">
+    <main className="bg-black text-white min-h-screen overflow-x-hidden relative">
       {/* Glow Background */}
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-purple-500/30 blur-[140px] rounded-full pointer-events-none"></div>
 
@@ -8,81 +12,143 @@ export default function Page() {
       <div className="absolute inset-0 opacity-20 bg-[radial-gradient(white_1px,transparent_1px)] [background-size:50px_50px]"></div>
 
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-black/40 border-b border-white/5">
+      <motion.nav
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="fixed top-0 w-full z-50 backdrop-blur-md bg-black/40 border-b border-white/5"
+      >
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
           <h1 className="text-2xl font-extrabold tracking-widest">
             ANI<span className="text-purple-500">MEX</span>
           </h1>
 
           <div className="hidden md:flex items-center gap-8 text-sm text-gray-300">
-            <a href="#" className="hover:text-purple-400 transition">Home</a>
-            <a href="#features" className="hover:text-purple-400 transition">Features</a>
-            <a href="#discover" className="hover:text-purple-400 transition">Discover</a>
-            <a href="#reviews" className="hover:text-purple-400 transition">Reviews</a>
+            <a href="#" className="hover:text-purple-400 transition">
+              Home
+            </a>
+
+            <a
+              href="#features"
+              className="hover:text-purple-400 transition"
+            >
+              Features
+            </a>
+
+            <a
+              href="#discover"
+              className="hover:text-purple-400 transition"
+            >
+              Discover
+            </a>
+
+            <a
+              href="#reviews"
+              className="hover:text-purple-400 transition"
+            >
+              Reviews
+            </a>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Hero */}
       <section className="min-h-screen flex items-center justify-center relative px-6 text-center">
         <div className="max-w-4xl z-10">
-          <div className="inline-block px-5 py-2 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 text-sm mb-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="inline-block px-5 py-2 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 text-sm mb-8"
+          >
             #1 Anime Streaming Platform
-          </div>
+          </motion.div>
 
-          <h1 className="text-6xl md:text-8xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-purple-500 text-transparent bg-clip-text mb-6">
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-6xl md:text-8xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-purple-500 text-transparent bg-clip-text mb-6"
+          >
             ANIMEX
-          </h1>
+          </motion.h1>
 
-          <p className="text-gray-400 text-lg leading-8 max-w-2xl mx-auto">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 1 }}
+            className="text-gray-400 text-lg leading-8 max-w-2xl mx-auto"
+          >
             Stream trending anime episodes, movies, and classics in ultra HD.
             Fast servers, beautiful UI, and a premium anime experience.
-          </p>
+          </motion.p>
 
-          <div className="flex flex-wrap justify-center gap-5 mt-10">
-            <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 font-semibold hover:-translate-y-1 transition shadow-[0_0_40px_rgba(168,85,247,0.4)]">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 1 }}
+            className="flex flex-wrap justify-center gap-5 mt-10"
+          >
+            <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 font-semibold hover:-translate-y-1 transition shadow-[0_0_40px_rgba(168,85,247,0.4)] hover:scale-105">
               Watch Now
             </button>
 
-            <button className="px-8 py-4 rounded-xl border border-white/10 bg-[#111] font-semibold hover:-translate-y-1 transition">
+            <button className="px-8 py-4 rounded-xl border border-white/10 bg-[#111] font-semibold hover:-translate-y-1 transition hover:bg-[#1a1a1a]">
               Browse Anime
             </button>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Features */}
       <section id="features" className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl font-bold mb-5">Watch Anime Your Way</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl font-bold mb-5">
+              Watch Anime Your Way
+            </h2>
+
             <p className="text-gray-400 max-w-2xl mx-auto leading-8">
-              From casual viewing to marathon sessions, our platform adapts to your style.
+              From casual viewing to marathon sessions, our platform adapts to
+              your style.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                title: 'Quick Sessions',
-                desc: 'Watch episodes during breaks with automatic progress saving.',
+                title: "Quick Sessions",
+                desc: "Watch episodes during breaks with automatic progress saving.",
               },
               {
-                title: 'Binge-Friendly',
-                desc: 'Watch complete seasons without interruptions and buffering.',
+                title: "Binge-Friendly",
+                desc: "Watch complete seasons without interruptions and buffering.",
               },
               {
-                title: 'Deep Dive',
-                desc: 'Explore thousands of anime titles with advanced filters.',
+                title: "Deep Dive",
+                desc: "Explore thousands of anime titles with advanced filters.",
               },
             ].map((card, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                viewport={{ once: true }}
                 className="bg-[#0d0d0d] border border-white/5 rounded-3xl p-8 hover:-translate-y-2 transition hover:border-purple-500/40 hover:shadow-[0_0_35px_rgba(168,85,247,0.15)]"
               >
-                <h3 className="text-2xl font-semibold mb-4">{card.title}</h3>
+                <h3 className="text-2xl font-semibold mb-4">
+                  {card.title}
+                </h3>
+
                 <p className="text-gray-400 leading-8">{card.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -91,84 +157,116 @@ export default function Page() {
       {/* Showcase */}
       <section id="discover" className="py-32 px-6">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -80 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+          >
             <h2 className="text-5xl font-bold leading-tight mb-6">
               Fast, Reliable Anime Streaming
             </h2>
 
             <p className="text-gray-400 leading-8 mb-10">
-              Built for speed and reliability. Watch anime in HD without buffering,
-              sync progress across devices, and enjoy a premium viewing experience.
+              Built for speed and reliability. Watch anime in HD without
+              buffering, sync progress across devices, and enjoy a premium
+              viewing experience.
             </p>
 
             <div className="flex flex-wrap gap-10">
               <div>
-                <h3 className="text-4xl font-bold text-purple-500">10K+</h3>
+                <h3 className="text-4xl font-bold text-purple-500">
+                  10K+
+                </h3>
+
                 <p className="text-gray-400 mt-2">Anime Titles</p>
               </div>
 
               <div>
-                <h3 className="text-4xl font-bold text-purple-500">1080p</h3>
+                <h3 className="text-4xl font-bold text-purple-500">
+                  1080p
+                </h3>
+
                 <p className="text-gray-400 mt-2">HD Streaming</p>
               </div>
 
               <div>
-                <h3 className="text-4xl font-bold text-purple-500">24/7</h3>
+                <h3 className="text-4xl font-bold text-purple-500">
+                  24/7
+                </h3>
+
                 <p className="text-gray-400 mt-2">Fast Servers</p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: 80 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+          >
             <img
               src="https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=1200&auto=format&fit=crop"
               alt="anime"
-              className="rounded-3xl border border-white/10 shadow-[0_0_40px_rgba(168,85,247,0.2)]"
+              className="rounded-3xl border border-white/10 shadow-[0_0_40px_rgba(168,85,247,0.2)] hover:scale-[1.02] transition duration-500"
             />
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Testimonials */}
       <section id="reviews" className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
+          >
             <h2 className="text-5xl font-bold mb-5">What They Say...</h2>
+
             <p className="text-gray-400">
               Thousands of anime fans love using Animex every day.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                name: 'Lmao',
-                text: 'Animex has the cleanest anime streaming UI I have ever used.',
+                name: "Lmao",
+                text: "Animex has the cleanest anime streaming UI I have ever used.",
               },
               {
-                name: 'Abadima',
-                text: 'Fast loading, amazing dark design and smooth animations.',
+                name: "Abadima",
+                text: "Fast loading, amazing dark design and smooth animations.",
               },
               {
-                name: 'Yaromix',
-                text: 'One of the best anime streaming websites visually.',
+                name: "Yaromix",
+                text: "One of the best anime streaming websites visually.",
               },
             ].map((review, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="bg-[#0d0d0d] border border-white/5 rounded-3xl p-8"
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                viewport={{ once: true }}
+                className="bg-[#0d0d0d] border border-white/5 rounded-3xl p-8 hover:border-purple-500/30 transition"
               >
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-14 h-14 rounded-full bg-purple-500"></div>
 
                   <div>
                     <h4 className="font-semibold text-lg">{review.name}</h4>
+
                     <p className="text-sm text-gray-500">@user</p>
                   </div>
                 </div>
 
                 <p className="text-gray-300 leading-8">{review.text}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -190,6 +288,7 @@ export default function Page() {
           <div className="grid grid-cols-2 gap-16">
             <div>
               <h4 className="font-semibold mb-4">Browse</h4>
+
               <div className="space-y-2 text-gray-500">
                 <p>Trending</p>
                 <p>Movies</p>
@@ -199,6 +298,7 @@ export default function Page() {
 
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
+
               <div className="space-y-2 text-gray-500">
                 <p>FAQ</p>
                 <p>Contact</p>
