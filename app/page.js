@@ -195,58 +195,62 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Trending Anime */}
-      <section id="anime" className="py-32 px-6 relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
-            <div>
-              <h2 className="text-5xl font-bold mb-3">
-                {search ? `Results for "${search}"` : "Trending Anime"}
-              </h2>
+     {/* Trending Anime */}
+<section id="anime" className="py-32 px-6 relative z-10">
+  <div className="max-w-7xl mx-auto">
+    <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
+      <div>
+        <h2 className="text-5xl font-bold mb-3">
+          {search ? `Results for "${search}"` : "Trending Anime"}
+        </h2>
 
-              <p className="text-gray-400">
-                Live anime data powered by Jikan API
-              </p>
+        <p className="text-gray-400">
+          Live anime data powered by Jikan API
+        </p>
+      </div>
+    </div>
+
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+      {animeList.map((anime, index) => (
+        <a
+          key={anime.mal_id}
+          href={`/anime/${anime.mal_id}`}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.05 }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.05 }}
+            className="bg-[#0d0d0d] rounded-3xl overflow-hidden border border-white/5 hover:border-purple-500/40 transition cursor-pointer"
+          >
+            <img
+              src={anime.images.jpg.large_image_url}
+              alt={anime.title}
+              className="w-full h-80 object-cover"
+            />
+
+            <div className="p-4">
+              <h3 className="font-bold text-lg line-clamp-1">
+                {anime.title}
+              </h3>
+
+              <div className="flex items-center justify-between mt-3">
+                <p className="text-purple-400">
+                  ⭐ {anime.score || "N/A"}
+                </p>
+
+                <p className="text-gray-500 text-sm">
+                  {anime.episodes || "?"} EP
+                </p>
+              </div>
             </div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-            {animeList.map((anime, index) => (
-              <motion.div
-                key={anime.mal_id}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05 }}
-                className="bg-[#0d0d0d] rounded-3xl overflow-hidden border border-white/5 hover:border-purple-500/40 transition"
-              >
-                <img
-                  src={anime.images.jpg.large_image_url}
-                  alt={anime.title}
-                  className="w-full h-80 object-cover"
-                />
-
-                <div className="p-4">
-                  <h3 className="font-bold text-lg line-clamp-1">
-                    {anime.title}
-                  </h3>
-
-                  <div className="flex items-center justify-between mt-3">
-                    <p className="text-purple-400">
-                      ⭐ {anime.score || "N/A"}
-                    </p>
-
-                    <p className="text-gray-500 text-sm">
-                      {anime.episodes || "?"} EP
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+          </motion.div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Showcase */}
       <section id="discover" className="py-32 px-6">
