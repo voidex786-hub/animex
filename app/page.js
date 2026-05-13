@@ -84,12 +84,22 @@ export default function Page() {
 
           {/* Search */}
           <input
-            type="text"
-            value={search}
-            onChange={(e) => searchAnime(e.target.value)}
-            placeholder="Search anime..."
-            className="w-full md:w-[300px] px-5 py-3 rounded-2xl bg-[#111] border border-white/10 outline-none focus:border-purple-500 transition"
-          />
+  type="text"
+  value={search}
+  onChange={(e) => {
+    searchAnime(e.target.value)
+
+    setTimeout(() => {
+      document
+        .getElementById("anime")
+        ?.scrollIntoView({
+          behavior: "smooth",
+        })
+    }, 200)
+  }}
+  placeholder="Search anime..."
+  className="w-full md:w-[300px] px-5 py-3 rounded-2xl bg-[#111] border border-white/10 outline-none focus:border-purple-500 transition"
+/>
         </div>
       </motion.nav>
 
