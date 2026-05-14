@@ -26,12 +26,27 @@ async function getRecommendations(id) {
   return data.data
 }
 
+async function getEpisodes(id) {
+  const res = await fetch(
+    `https://api.jikan.moe/v4/anime/${id}/episodes`,
+    {
+      cache: "no-store",
+    }
+  )
+
+  const data = await res.json()
+
+  return data.data
+}
+
 export default async function WatchPage({ params }) {
   const { id } = await params
 
   const anime = await getAnime(id)
 
   const recommendations = await getRecommendations(id)
+
+  const episodes = await getEpisodes(id)
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10 overflow-hidden relative">
@@ -143,20 +158,26 @@ export default async function WatchPage({ params }) {
                 Episodes
               </h2>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid md:grid-cols-2 gap-4">
 
-                {[...Array(12)].map((_, i) => (
+                {episodes?.map((episode) => (
 
                   <Link
-                    key={i}
-                    href={`/watch/${anime.mal_id}/episode/${i + 1}`}
+                    key={episode.mal_id}
+                    href={`/watch/${anime.mal_id}/episode/${episode.mal_id}`}
                   >
 
-                    <button
-                      className="w-full bg-[#111] border border-white/10 rounded-2xl py-4 hover:border-purple-500 hover:bg-purple-500/10 transition duration-300"
-                    >
-                      Episode {i + 1}
-                    </button>
+                    <div className="bg-[#111] border border-white/10 rounded-2xl p-5 hover:border-purple-500 hover:bg-purple-500/10 transition duration-300">
+
+                      <h3 className="font-bold text-lg mb-2">
+                        Episode {episode.mal_id}
+                      </h3>
+
+                      <p className="text-gray-400 line-clamp-2">
+                        {episode.title}
+                      </p>
+
+                    </div>
 
                   </Link>
 
