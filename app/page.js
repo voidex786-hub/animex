@@ -441,52 +441,66 @@ export default function Page() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-14 px-6">
+<footer className="border-t border-white/5 py-14 px-6">
 
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10">
+  <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10">
 
-          <div>
-            <h2 className="text-3xl font-bold mb-4">
-              ANI<span className="text-purple-500">MEX</span>
-            </h2>
+    <div>
+      <h2 className="text-3xl font-bold mb-4">
+        ANI<span className="text-purple-500">MEX</span>
+      </h2>
 
-            <p className="text-gray-500 max-w-sm leading-7">
-              Premium anime streaming experience with modern UI and fast servers.
-            </p>
-          </div>
+      <p className="text-gray-500 max-w-sm leading-7">
+        Premium anime streaming experience with modern UI and fast servers.
+      </p>
 
-          <div className="grid grid-cols-2 gap-16">
+      {/* ✅ INSTAGRAM ADDED HERE (SAFE) */}
+      <div className="mt-6 text-sm text-gray-400">
+        Owner:{" "}
+        <a
+          href="https://www.instagram.com/voidex.nx/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-purple-400 hover:underline"
+        >
+          @voidex.nx
+        </a>
+      </div>
 
-            <div>
-              <h4 className="font-semibold mb-4">
-                Browse
-              </h4>
+    </div>
 
-              <div className="space-y-2 text-gray-500">
-                <p>Trending</p>
-                <p>Movies</p>
-                <p>TV Shows</p>
-              </div>
-            </div>
+    <div className="grid grid-cols-2 gap-16">
 
-            <div>
-              <h4 className="font-semibold mb-4">
-                Resources
-              </h4>
+      <div>
+        <h4 className="font-semibold mb-4">
+          Browse
+        </h4>
 
-              <div className="space-y-2 text-gray-500">
-                <p>FAQ</p>
-                <p>Contact</p>
-                <p>Privacy</p>
-              </div>
-            </div>
-
-          </div>
+        <div className="space-y-2 text-gray-500">
+          <p>Trending</p>
+          <p>Movies</p>
+          <p>TV Shows</p>
         </div>
+      </div>
 
-        <div className="text-center text-gray-600 mt-16 text-sm">
-          © 2026 ANIMEX — All Rights Reserved
+      <div>
+        <h4 className="font-semibold mb-4">
+          Resources
+        </h4>
+
+        <div className="space-y-2 text-gray-500">
+          <p>FAQ</p>
+          <p>Contact</p>
+          <p>Privacy</p>
         </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div className="text-center text-gray-600 mt-16 text-sm">
+    © 2026 ANIMEX — All Rights Reserved
+  </div>
 
       </footer>
 
