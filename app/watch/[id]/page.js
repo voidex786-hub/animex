@@ -39,6 +39,19 @@ async function getEpisodes(id) {
   return data.data
 }
 
+async function getCharacters(id) {
+  const res = await fetch(
+    `https://api.jikan.moe/v4/anime/${id}/characters`,
+    {
+      cache: "no-store",
+    }
+  )
+
+  const data = await res.json()
+
+  return data.data
+}
+
 export default async function WatchPage({ params }) {
   const { id } = await params
 
@@ -47,6 +60,8 @@ export default async function WatchPage({ params }) {
   const recommendations = await getRecommendations(id)
 
   const episodes = await getEpisodes(id)
+
+  const characters = await getCharacters(id)
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10 overflow-hidden relative">
@@ -188,6 +203,56 @@ export default async function WatchPage({ params }) {
             </div>
 
           </div>
+        </div>
+
+        {/* Characters */}
+        <div className="mb-24">
+
+          <h2 className="text-4xl font-bold mb-10">
+            Characters
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {characters?.slice(0, 8).map((character) => (
+
+              <div
+                key={character.character.mal_id}
+                className="bg-[#111] border border-white/10 rounded-3xl p-5 flex gap-5 hover:border-purple-500 transition duration-300"
+              >
+
+                {/* Character Image */}
+                <img
+                  src={character.character.images.jpg.image_url}
+                  alt={character.character.name}
+                  className="w-24 h-24 object-cover rounded-2xl"
+                />
+
+                {/* Info */}
+                <div className="flex-1">
+
+                  <h3 className="text-xl font-bold mb-2">
+                    {character.character.name}
+                  </h3>
+
+                  <p className="text-purple-400 mb-2">
+                    {character.role}
+                  </p>
+
+                  <p className="text-gray-400 text-sm">
+                    Voice Actor:
+                    {" "}
+                    {character.voice_actors?.[0]?.person?.name || "Unknown"}
+                  </p>
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
+
         </div>
 
         {/* Related Anime */}
