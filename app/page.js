@@ -470,7 +470,7 @@ export default function Page() {
       </section>
 
       {/* Testimonials */}
-      <section id="reviews" className="py-32 px-6">
+      <section id="reviews" className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
 
           <div className="text-center mb-20">
