@@ -1,6 +1,21 @@
+import Link from "next/link"
+
 async function getAnime(id) {
   const res = await fetch(
     `https://api.jikan.moe/v4/anime/${id}`,
+    {
+      cache: "no-store",
+    }
+  )
+
+  const data = await res.json()
+
+  return data.data
+}
+
+async function getRecommendations(id) {
+  const res = await fetch(
+    `https://api.jikan.moe/v4/anime/${id}/recommendations`,
     {
       cache: "no-store",
     }
@@ -15,6 +30,8 @@ export default async function WatchPage({ params }) {
   const { id } = await params
 
   const anime = await getAnime(id)
+
+  const recommendations = await getRecommendations(id)
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10 overflow-hidden relative">
@@ -63,7 +80,7 @@ export default async function WatchPage({ params }) {
         </div>
 
         {/* Anime Info */}
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-3 gap-10 mb-24">
 
           {/* Poster */}
           <div>
@@ -145,6 +162,53 @@ export default async function WatchPage({ params }) {
 
           </div>
         </div>
+
+        {/* Related Anime */}
+        <div>
+
+          <h2 className="text-4xl font-bold mb-10">
+            You May Also Like
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+
+            {recommendations?.slice(0, 10).map((item) => (
+
+              <Link
+                key={item.entry.mal_id}
+                href={`/anime/${item.entry.mal_id}`}
+              >
+
+                <div className="group bg-[#111] rounded-3xl overflow-hidden border border-white/10 hover:border-purple-500 transition duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(168,85,247,0.25)]">
+
+                  <div className="overflow-hidden">
+
+                    <img
+                      src={item.entry.images.jpg.large_image_url}
+                      alt={item.entry.title}
+                      className="w-full h-72 object-cover group-hover:scale-110 transition duration-500"
+                    />
+
+                  </div>
+
+                  <div className="p-4">
+
+                    <h3 className="font-bold line-clamp-2">
+                      {item.entry.title}
+                    </h3>
+
+                  </div>
+
+                </div>
+
+              </Link>
+
+            ))}
+
+          </div>
+
+        </div>
+
       </div>
     </main>
   )
