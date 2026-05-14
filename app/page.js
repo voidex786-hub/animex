@@ -96,24 +96,7 @@ export default function Page() {
       </motion.nav>
 
       {/* Hero */}
-      <div className="absolute inset-0 overflow-hidden">
-
-  {[...Array(60)].map((_, i) => (
-    <div
-      key={i}
-      className="absolute bg-white rounded-full animate-pulse"
-      style={{
-        width: `${Math.random() * 3 + 1}px`,
-        height: `${Math.random() * 3 + 1}px`,
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        opacity: Math.random(),
-        animationDuration: `${Math.random() * 3 + 2}s`,
-      }}
-    />
-  ))}
-
-</div>
+      
       <section className="min-h-screen flex items-center justify-center relative px-6 pt-44 md:pt-32 text-center overflow-hidden">
         <div className="max-w-4xl z-10">
 
@@ -158,7 +141,7 @@ export default function Page() {
   initial={{ opacity: 0, y: 40 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 1 }}
-  className="text-5xl sm:text-6xl md:text-8xl font-extrabold ..."
+  className="text-6xl md:text-8xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-purple-500 text-transparent bg-clip-text mb-6"
 >
   ANIMEX
 </motion.h1>
