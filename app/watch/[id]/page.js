@@ -182,8 +182,7 @@ export default async function WatchPage({ params }) {
                     href={`/watch/${anime.mal_id}/episode/${episode.mal_id}`}
                   >
 
-                   <div className="bg-[#111] border border-white/10 rounded-2xl p-5 hover:border-purple-500 hover:bg-purple-500/10 transition duration-300 cursor-pointer"
->
+                    <div className="bg-[#111] border border-white/10 rounded-2xl p-5 hover:border-purple-500 hover:bg-purple-500/10 transition duration-300">
 
                       <h3 className="font-bold text-lg mb-2">
                         Episode {episode.mal_id}
