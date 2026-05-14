@@ -45,32 +45,45 @@ export default function Page() {
   }
 
   return (
-    <main className="bg-black text-white min-h-screen overflow-x-hidden relative">
+    <main className="bg-black text-white min-h-screen overflow-x-hidden relative isolate">
 
       {/* Glow Background */}
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-purple-500/30 blur-[140px] rounded-full pointer-events-none"></div>
 
       {/* Cinematic Purple Matrix Background */}
-<div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+<div className="absolute inset-0 overflow-hidden pointer-events-none z-0 perspective-[1000px]">
 
-  {/* Dark Purple Glow */}
+  {/* Background Glow */}
   <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-black"></div>
 
-  {/* Falling Light Lines */}
-  {[...Array(70)].map((_, i) => {
+  {/* Main Center Glow */}
+  <div className="absolute left-1/2 top-[30%] -translate-x-1/2 w-[900px] h-[900px] bg-purple-500/20 blur-[180px] rounded-full"></div>
+
+  {/* Falling Light Streaks */}
+  {[...Array(140)].map((_, i) => {
 
     const left = Math.random() * 100
     const delay = Math.random() * 5
-    const duration = 6 + Math.random() * 8
-    const height = 120 + Math.random() * 300
-    const width = Math.random() > 0.8 ? 3 : 1.5
-    const opacity = Math.random() * 0.7 + 0.2
-    const blur = Math.random() > 0.7 ? "blur(2px)" : "blur(0.5px)"
+    const duration = 6 + Math.random() * 10
+    const height = 200 + Math.random() * 500
+
+    const width =
+      Math.random() > 0.9
+        ? 2
+        : 1
+
+    const opacity =
+      Math.random() * 0.7 + 0.2
+
+    const blur =
+      Math.random() > 0.85
+        ? "blur(4px)"
+        : "blur(0.3px)"
 
     return (
       <div
         key={i}
-        className="absolute top-[-400px] rounded-full matrix-line"
+        className="absolute top-[-600px] rounded-full matrix-line"
         style={{
           left: `${left}%`,
           height: `${height}px`,
@@ -79,13 +92,14 @@ export default function Page() {
           filter: blur,
           animationDelay: `${delay}s`,
           animationDuration: `${duration}s`,
+          transform: `translateZ(${Math.random() * 200}px)`,
         }}
       />
     )
   })}
 
   {/* Floating Purple Particles */}
-  {[...Array(40)].map((_, i) => (
+  {[...Array(60)].map((_, i) => (
     <div
       key={`particle-${i}`}
       className="absolute rounded-full bg-purple-400/40 animate-pulse"
@@ -95,12 +109,13 @@ export default function Page() {
         left: `${Math.random() * 100}%`,
         top: `${Math.random() * 100}%`,
         filter: "blur(1px)",
+        opacity: Math.random() * 0.8,
       }}
     />
   ))}
 
-  {/* Extra Blur Layer */}
-  <div className="absolute inset-0 backdrop-blur-[2px]" />
+  {/* Soft Blur Overlay */}
+  <div className="absolute inset-0 backdrop-blur-[1px]" />
 
 </div>
       {/* Navbar */}
