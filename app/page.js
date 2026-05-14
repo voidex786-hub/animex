@@ -337,8 +337,11 @@ const [loading, setLoading] = useState(true)
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   viewport={{ once: true }}
-                  whileHover={{ scale: 1.05 }}
-                  className="group relative bg-[#0d0d0d] rounded-3xl overflow-hidden border border-white/5 hover:border-purple-500/40 transition duration-300 hover:shadow-[0_0_40px_rgba(168,85,247,0.25)]"
+                  whileHover={{
+  scale: 1.05,
+  y: -10,
+}}
+                  className="group relative bg-[#0d0d0d] rounded-3xl overflow-hidden border border-white/5 hover:border-purple-500/40 transition duration-500 hover:shadow-[0_0_60px_rgba(168,85,247,0.35)]"
                 >
 
                   {/* Image */}
@@ -347,7 +350,7 @@ const [loading, setLoading] = useState(true)
                     <img
                       src={anime.images.jpg.large_image_url}
                       alt={anime.title}
-                      className="w-full h-80 object-cover group-hover:scale-110 transition duration-500"
+                      className="w-full h-80 object-cover group-hover:scale-110 group-hover:rotate-1 transition duration-700"
                     />
 
                     {/* Overlay */}
