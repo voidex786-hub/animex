@@ -56,11 +56,11 @@ export default function Page() {
   {[...Array(80)].map((_, i) => (
     <div
       key={i}
-      className="absolute text-purple-500/20 font-bold animate-[matrix_10s_linear_infinite]"
+      className="absolute text-purple-400/60 font-bold animate-[matrix_10s_linear_infinite] blur-[0.3px]"
       style={{
         left: `${Math.random() * 100}%`,
         top: `-${Math.random() * 100}%`,
-        fontSize: `${Math.random() * 12 + 10}px`,
+        fontSize: `${Math.random() * 18 + 14}px`,
         animationDuration: `${Math.random() * 10 + 10}s`,
         animationDelay: `${Math.random() * 10}s`,
       }}
