@@ -51,7 +51,25 @@ export default function Page() {
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-purple-500/30 blur-[140px] rounded-full pointer-events-none"></div>
 
       {/* Stars */}
-      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(white_1px,transparent_1px)] [background-size:50px_50px]"></div>
+      {/* Animated Stars */}
+<div className="absolute inset-0 overflow-hidden pointer-events-none">
+
+  {[...Array(120)].map((_, i) => (
+    <span
+      key={i}
+      className="absolute bg-white rounded-full animate-pulse"
+      style={{
+        width: Math.random() * 3 + "px",
+        height: Math.random() * 3 + "px",
+        top: Math.random() * 100 + "%",
+        left: Math.random() * 100 + "%",
+        opacity: Math.random(),
+        animationDuration: 2 + Math.random() * 5 + "s",
+      }}
+    />
+  ))}
+
+</div>
 
       {/* Navbar */}
       <motion.nav
