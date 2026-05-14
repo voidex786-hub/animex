@@ -98,7 +98,7 @@ export default function Page() {
       {/* Hero */}
       
       <section className="min-h-screen flex items-center justify-center relative px-6 pt-44 md:pt-32 text-center overflow-hidden">
-        <div className="max-w-4xl z-10">
+        <div className="max-w-4xl z-10 relative">
 
           <div className="flex flex-col items-center gap-4 mb-8">
 
