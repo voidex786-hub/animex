@@ -96,7 +96,7 @@ export default function Page() {
       </motion.nav>
 
       {/* Hero */}
-      <section className="min-h-screen flex items-center justify-center relative px-6 text-center">
+      <section className="min-h-screen flex items-center justify-center relative px-6 pt-40 md:pt-32 text-center">
         <div className="max-w-4xl z-10">
 
           <div className="flex flex-col items-center gap-4 mb-8">
@@ -109,7 +109,7 @@ export default function Page() {
   initial={{ opacity: 0, y: -20 }}
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.6 }}
-  className="flex items-center gap-2 px-5 py-2 rounded-full border border-pink-500/40 bg-pink-500/10 text-pink-300 text-sm hover:bg-pink-500/20 transition shadow-[0_0_20px_rgba(236,72,153,0.25)]"
+  className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full border border-pink-500/40 bg-pink-500/10 text-pink-300 text-xs sm:text-sm hover:bg-pink-500/20 transition shadow-[0_0_20px_rgba(236,72,153,0.25)] max-w-full"
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
