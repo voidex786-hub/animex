@@ -394,7 +394,10 @@ export default function Page() {
       </section>
 
       {/* Showcase */}
-      <section id="discover" className="py-32 px-6">
+      <section
+  id="discover"
+  className="py-32 px-6 relative z-10"
+>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
 
           <motion.div
@@ -535,7 +538,7 @@ export default function Page() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-14 px-6">
+      <footer className="border-t border-white/5 py-14 px-6 relative z-10">
 
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10">
 
