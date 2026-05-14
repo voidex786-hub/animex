@@ -147,12 +147,18 @@ export default async function WatchPage({ params }) {
 
                 {[...Array(12)].map((_, i) => (
 
-                  <button
+                  <Link
                     key={i}
-                    className="bg-[#111] border border-white/10 rounded-2xl py-4 hover:border-purple-500 hover:bg-purple-500/10 transition duration-300"
+                    href={`/watch/${anime.mal_id}/episode/${i + 1}`}
                   >
-                    Episode {i + 1}
-                  </button>
+
+                    <button
+                      className="w-full bg-[#111] border border-white/10 rounded-2xl py-4 hover:border-purple-500 hover:bg-purple-500/10 transition duration-300"
+                    >
+                      Episode {i + 1}
+                    </button>
+
+                  </Link>
 
                 ))}
 
