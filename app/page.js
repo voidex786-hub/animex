@@ -96,7 +96,25 @@ export default function Page() {
       </motion.nav>
 
       {/* Hero */}
-      <section className="min-h-screen flex items-center justify-center relative px-6 pt-40 md:pt-32 text-center">
+      <div className="absolute inset-0 overflow-hidden">
+
+  {[...Array(60)].map((_, i) => (
+    <div
+      key={i}
+      className="absolute bg-white rounded-full animate-pulse"
+      style={{
+        width: `${Math.random() * 3 + 1}px`,
+        height: `${Math.random() * 3 + 1}px`,
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        opacity: Math.random(),
+        animationDuration: `${Math.random() * 3 + 2}s`,
+      }}
+    />
+  ))}
+
+</div>
+      <section className="min-h-screen flex items-center justify-center relative px-6 pt-44 md:pt-32 text-center overflow-hidden">
         <div className="max-w-4xl z-10">
 
           <div className="flex flex-col items-center gap-4 mb-8">
@@ -136,14 +154,33 @@ export default function Page() {
 
 </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="text-6xl md:text-8xl font-extrabold bg-gradient-to-r from-white via-purple-200 to-purple-500 text-transparent bg-clip-text mb-6"
-          >
-            ANIMEX
-          </motion.h1>
+          <div className="relative w-full h-[180px] sm:h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden mb-6 rounded-3xl">
+
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="absolute inset-0 w-full h-full object-cover"
+  >
+    <source
+      src="https://cdn.pixabay.com/video/2023/09/17/180712-865613162_large.mp4"
+      type="video/mp4"
+    />
+  </video>
+
+  <div className="absolute inset-0 bg-black/45"></div>
+
+  <h1
+    className="relative z-10 text-5xl sm:text-7xl md:text-[150px] font-black tracking-[6px] text-transparent"
+    style={{
+      WebkitTextStroke: "2px rgba(255,255,255,0.9)",
+    }}
+  >
+    ANIMEX
+  </h1>
+
+</div>
 
           <motion.p
             initial={{ opacity: 0 }}
