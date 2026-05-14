@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 export default function Page() {
   const [animeList, setAnimeList] = useState([])
 const [search, setSearch] = useState("")
+const [suggestions, setSuggestions] = useState([])
 const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -24,29 +25,36 @@ const [loading, setLoading] = useState(true)
   }
 
   async function searchAnime(query) {
-    setLoading(true)
-    setSearch(query)
+  setLoading(true)
 
-    if (query.trim() === "") {
-      fetchTopAnime()
+  setSearch(query)
 
-      return
-    }
+  if (query.trim() === "") {
+    setSuggestions([])
 
-    const res = await fetch(
-      `https://api.jikan.moe/v4/anime?q=${query}`
-    )
+    fetchTopAnime()
 
-    const data = await res.json()
-
-    setAnimeList(data.data.slice(0, 10))
-
-    setTimeout(() => {
-      document.getElementById("anime")?.scrollIntoView({
-        behavior: "smooth",
-      })
-    }, 100)
+    return
   }
+
+  const res = await fetch(
+    `https://api.jikan.moe/v4/anime?q=${query}`
+  )
+
+  const data = await res.json()
+
+  setAnimeList(data.data.slice(0, 10))
+
+  setSuggestions(data.data.slice(0, 5))
+
+  setLoading(false)
+
+  setTimeout(() => {
+    document.getElementById("anime")?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }, 100)
+}
 
   return (
     <main className="bg-black text-white min-h-screen overflow-x-hidden relative isolate">
@@ -123,46 +131,114 @@ const [loading, setLoading] = useState(true)
 
 </div>
       {/* Navbar */}
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="fixed top-0 w-full z-50 backdrop-blur-md bg-black/40 border-b border-white/5"
-      >
-        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row gap-5 md:gap-0 items-center justify-between">
+<motion.nav
+  initial={{ y: -80, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.8 }}
+  className="fixed top-0 w-full z-50 backdrop-blur-md bg-black/40 border-b border-white/5"
+>
+  <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row gap-5 md:gap-0 items-center justify-between">
 
-          <h1 className="text-3xl font-extrabold tracking-widest">
-            ANI<span className="text-purple-500">MEX</span>
-          </h1>
+    {/* Logo */}
+    <h1 className="text-3xl font-extrabold tracking-widest">
+      ANI<span className="text-purple-500">MEX</span>
+    </h1>
 
-          <div className="hidden md:flex items-center gap-8 text-sm text-gray-300">
-            <a href="#" className="hover:text-purple-400 transition">
-              Home
-            </a>
+    {/* Nav Links */}
+    <div className="hidden md:flex items-center gap-8 text-sm text-gray-300">
 
-            <a href="#features" className="hover:text-purple-400 transition">
-              Features
-            </a>
+      <a href="#" className="hover:text-purple-400 transition">
+        Home
+      </a>
 
-            <a href="#discover" className="hover:text-purple-400 transition">
-              Discover
-            </a>
+      <a href="#features" className="hover:text-purple-400 transition">
+        Features
+      </a>
 
-            <a href="#anime" className="hover:text-purple-400 transition">
-              Anime
-            </a>
-          </div>
+      <a href="#discover" className="hover:text-purple-400 transition">
+        Discover
+      </a>
 
-          {/* Search */}
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => searchAnime(e.target.value)}
-            placeholder="Search anime..."
-            className="w-full md:w-[300px] px-5 py-3 rounded-2xl bg-[#111] border border-white/10 outline-none focus:border-purple-500 transition"
-          />
+      <a href="#anime" className="hover:text-purple-400 transition">
+        Anime
+      </a>
+
+    </div>
+
+    {/* Search */}
+    <div className="relative w-full md:w-[300px]">
+
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => searchAnime(e.target.value)}
+        placeholder="Search anime..."
+        className="w-full px-5 py-3 rounded-2xl bg-[#111] border border-white/10 outline-none focus:border-purple-500 transition"
+      />
+
+      {/* Loading Spinner */}
+      {loading && search && (
+        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+          <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
         </div>
-      </motion.nav>
+      )}
+
+      {/* Suggestions Dropdown */}
+      {search && !loading && suggestions.length > 0 && (
+
+        <div className="absolute top-full mt-3 w-full bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden z-50 shadow-[0_0_40px_rgba(168,85,247,0.2)] backdrop-blur-xl">
+
+          {suggestions.map((anime) => (
+
+            <Link
+              key={anime.mal_id}
+              href={`/anime/${anime.mal_id}`}
+            >
+
+              <div className="flex items-center gap-4 p-4 hover:bg-purple-500/10 transition border-b border-white/5 cursor-pointer">
+
+                {/* Poster */}
+                <img
+                  src={anime.images.jpg.image_url}
+                  alt={anime.title}
+                  className="w-14 h-16 object-cover rounded-lg"
+                />
+
+                {/* Info */}
+                <div className="flex-1">
+
+                  <h3 className="font-semibold line-clamp-1">
+                    {anime.title}
+                  </h3>
+
+                  <div className="flex items-center gap-3 mt-1 text-sm text-gray-400">
+
+                    <p>
+                      ⭐ {anime.score || "N/A"}
+                    </p>
+
+                    <p>
+                      {anime.episodes || "?"} EP
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </Link>
+
+          ))}
+
+        </div>
+
+      )}
+
+    </div>
+
+  </div>
+</motion.nav>
 
       {/* Hero */}
       
