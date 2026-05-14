@@ -51,28 +51,7 @@ export default function Page() {
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-purple-500/30 blur-[140px] rounded-full pointer-events-none"></div>
 
       {/* Stars */}
-      {/* Falling Stars */}
-<div className="absolute inset-0 overflow-hidden pointer-events-none">
-
-  {[...Array(40)].map((_, i) => (
-    <span
-      key={i}
-      className="absolute block bg-white rounded-full animate-[fall_linear_infinite]"
-      style={{
-        width: Math.random() * 3 + 1 + "px",
-        height: Math.random() * 80 + 20 + "px",
-        left: Math.random() * 100 + "%",
-        top: -100 + "px",
-        opacity: Math.random(),
-        animationDuration: Math.random() * 5 + 5 + "s",
-        animationDelay: Math.random() * 5 + "s",
-        transform: "rotate(45deg)",
-        boxShadow: "0 0 10px rgba(255,255,255,0.8)",
-      }}
-    />
-  ))}
-
-</div>
+     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(white_1px,transparent_1px)] [background-size:50px_50px]"></div>
 
       {/* Navbar */}
       <motion.nav
@@ -175,33 +154,14 @@ export default function Page() {
 
 </div>
 
-          <div className="relative w-full h-[180px] sm:h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden mb-6 rounded-3xl">
-
-  <video
-    autoPlay
-    muted
-    loop
-    playsInline
-    className="absolute inset-0 w-full h-full object-cover"
-  >
-    <source
-      src="https://cdn.pixabay.com/video/2023/09/17/180712-865613162_large.mp4"
-      type="video/mp4"
-    />
-  </video>
-
-  <div className="absolute inset-0 bg-black/45"></div>
-
-  <h1
-    className="relative z-10 text-5xl sm:text-7xl md:text-[150px] font-black tracking-[6px] text-transparent"
-    style={{
-      WebkitTextStroke: "2px rgba(255,255,255,0.9)",
-    }}
-  >
-    ANIMEX
-  </h1>
-
-</div>
+          <motion.h1
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1 }}
+  className="text-5xl sm:text-6xl md:text-8xl font-extrabold ..."
+>
+  ANIMEX
+</motion.h1>
 
           <motion.p
             initial={{ opacity: 0 }}
