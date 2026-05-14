@@ -372,15 +372,31 @@ export default function Page() {
 
                     <div className="flex items-center justify-between text-sm text-gray-400">
 
-                      <p>
-                        {anime.episodes || "?"} Episodes
-                      </p>
+  <p>
+    {anime.episodes || "?"} Episodes
+  </p>
 
-                      <p className="text-purple-400">
-                        {anime.status}
-                      </p>
+  <p className="text-purple-400">
+    {anime.status}
+  </p>
 
-                    </div>
+</div>
+
+{/* Genres */}
+<div className="flex flex-wrap gap-2 mt-4">
+
+  {anime.genres?.slice(0, 2).map((genre) => (
+
+    <span
+      key={genre.mal_id}
+      className="text-xs px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300"
+    >
+      {genre.name}
+    </span>
+
+  ))}
+
+</div>
                   </div>
 
                 </motion.div>
