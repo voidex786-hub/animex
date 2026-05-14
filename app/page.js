@@ -51,20 +51,23 @@ export default function Page() {
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-purple-500/30 blur-[140px] rounded-full pointer-events-none"></div>
 
       {/* Stars */}
-      {/* Animated Stars */}
+      {/* Falling Stars */}
 <div className="absolute inset-0 overflow-hidden pointer-events-none">
 
-  {[...Array(120)].map((_, i) => (
+  {[...Array(40)].map((_, i) => (
     <span
       key={i}
-      className="absolute bg-white rounded-full animate-pulse"
+      className="absolute block bg-white rounded-full animate-[fall_linear_infinite]"
       style={{
-        width: Math.random() * 3 + "px",
-        height: Math.random() * 3 + "px",
-        top: Math.random() * 100 + "%",
+        width: Math.random() * 3 + 1 + "px",
+        height: Math.random() * 80 + 20 + "px",
         left: Math.random() * 100 + "%",
+        top: -100 + "px",
         opacity: Math.random(),
-        animationDuration: 2 + Math.random() * 5 + "s",
+        animationDuration: Math.random() * 5 + 5 + "s",
+        animationDelay: Math.random() * 5 + "s",
+        transform: "rotate(45deg)",
+        boxShadow: "0 0 10px rgba(255,255,255,0.8)",
       }}
     />
   ))}
