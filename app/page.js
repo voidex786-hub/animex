@@ -99,14 +99,32 @@ export default function Page() {
       <section className="min-h-screen flex items-center justify-center relative px-6 text-center">
         <div className="max-w-4xl z-10">
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="inline-block px-5 py-2 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 text-sm mb-8"
-          >
-            #1 Anime Streaming Platform
-          </motion.div>
+          <div className="flex flex-col items-center gap-4 mb-8">
+
+  {/* Owner Insta */}
+  <motion.a
+    href="https://www.instagram.com/voidex.nx/?utm_source=ig_web_button_share_sheet"
+    target="_blank"
+    rel="noopener noreferrer"
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    className="px-5 py-2 rounded-full border border-pink-500/40 bg-pink-500/10 text-pink-300 text-sm hover:bg-pink-500/20 transition shadow-[0_0_20px_rgba(236,72,153,0.25)]"
+  >
+    Owner: @voidex.nx
+  </motion.a>
+
+  {/* Anime Badge */}
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.8 }}
+    className="inline-block px-5 py-2 rounded-full border border-purple-500/40 bg-purple-500/10 text-purple-300 text-sm"
+  >
+    #1 Anime Streaming Platform
+  </motion.div>
+
+</div>
 
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
