@@ -50,24 +50,57 @@ export default function Page() {
       {/* Glow Background */}
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-purple-500/30 blur-[140px] rounded-full pointer-events-none"></div>
 
-      {/* Live Floating Matrix */}
-<div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Cinematic Purple Matrix Background */}
+<div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
 
-  {[...Array(80)].map((_, i) => (
+  {/* Dark Purple Glow */}
+  <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-black"></div>
+
+  {/* Falling Light Lines */}
+  {[...Array(70)].map((_, i) => {
+
+    const left = Math.random() * 100
+    const delay = Math.random() * 5
+    const duration = 6 + Math.random() * 8
+    const height = 120 + Math.random() * 300
+    const width = Math.random() > 0.8 ? 3 : 1.5
+    const opacity = Math.random() * 0.7 + 0.2
+    const blur = Math.random() > 0.7 ? "blur(2px)" : "blur(0.5px)"
+
+    return (
+      <div
+        key={i}
+        className="absolute top-[-400px] rounded-full matrix-line"
+        style={{
+          left: `${left}%`,
+          height: `${height}px`,
+          width: `${width}px`,
+          opacity,
+          filter: blur,
+          animationDelay: `${delay}s`,
+          animationDuration: `${duration}s`,
+        }}
+      />
+    )
+  })}
+
+  {/* Floating Purple Particles */}
+  {[...Array(40)].map((_, i) => (
     <div
-      key={i}
-      className="absolute text-purple-400/60 font-bold animate-[matrix_10s_linear_infinite] blur-[0.3px]"
+      key={`particle-${i}`}
+      className="absolute rounded-full bg-purple-400/40 animate-pulse"
       style={{
+        width: `${Math.random() * 4 + 1}px`,
+        height: `${Math.random() * 4 + 1}px`,
         left: `${Math.random() * 100}%`,
-        top: `-${Math.random() * 100}%`,
-        fontSize: `${Math.random() * 18 + 14}px`,
-        animationDuration: `${Math.random() * 10 + 10}s`,
-        animationDelay: `${Math.random() * 10}s`,
+        top: `${Math.random() * 100}%`,
+        filter: "blur(1px)",
       }}
-    >
-      {Math.random() > 0.5 ? "1" : "0"}
-    </div>
+    />
   ))}
+
+  {/* Extra Blur Layer */}
+  <div className="absolute inset-0 backdrop-blur-[2px]" />
 
 </div>
       {/* Navbar */}
