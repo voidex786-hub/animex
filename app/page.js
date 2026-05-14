@@ -9,10 +9,18 @@ export default function Page() {
 const [search, setSearch] = useState("")
 const [suggestions, setSuggestions] = useState([])
 const [loading, setLoading] = useState(true)
+const [continueAnime, setContinueAnime] = useState(null)
 
   useEffect(() => {
-    fetchTopAnime()
-  }, [])
+  fetchTopAnime()
+
+  const saved = localStorage.getItem("continueWatching")
+
+  if (saved) {
+    setContinueAnime(JSON.parse(saved))
+  }
+
+}, [])
 
   async function fetchTopAnime() {
     setLoading(true)
@@ -322,7 +330,52 @@ const [loading, setLoading] = useState(true)
 
         </div>
       </section>
+{/* Continue Watching */}
+{continueAnime && (
 
+  <section className="py-20 px-6 relative z-10">
+
+    <div className="max-w-7xl mx-auto">
+
+      <h2 className="text-4xl font-bold mb-10">
+        Continue Watching
+      </h2>
+
+      <Link href={`/watch/${continueAnime.animeId}`}>
+
+        <div className="bg-[#0d0d0d] border border-white/10 rounded-3xl overflow-hidden md:flex hover:border-purple-500/40 transition cursor-pointer">
+
+          <img
+            src={continueAnime.image}
+            alt={continueAnime.animeTitle}
+            className="w-full md:w-[250px] h-[350px] md:h-auto object-cover"
+          />
+
+          <div className="p-8 flex flex-col justify-center">
+
+            <h3 className="text-3xl font-bold mb-4">
+              {continueAnime.animeTitle}
+            </h3>
+
+            <p className="text-purple-400 text-lg mb-6">
+              Continue from Episode {continueAnime.episode}
+            </p>
+
+            <button className="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 w-fit">
+              ▶ Continue
+            </button>
+
+          </div>
+
+        </div>
+
+      </Link>
+
+    </div>
+
+  </section>
+
+)}
       {/* Features */}
       <section id="features" className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
