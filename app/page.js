@@ -50,9 +50,26 @@ export default function Page() {
       {/* Glow Background */}
       <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-purple-500/30 blur-[140px] rounded-full pointer-events-none"></div>
 
-      {/* Stars */}
-     <div className="absolute inset-0 opacity-20 bg-[radial-gradient(white_1px,transparent_1px)] [background-size:50px_50px]"></div>
+      {/* Live Floating Matrix */}
+<div className="absolute inset-0 overflow-hidden pointer-events-none">
 
+  {[...Array(80)].map((_, i) => (
+    <div
+      key={i}
+      className="absolute text-purple-500/20 font-bold animate-[matrix_10s_linear_infinite]"
+      style={{
+        left: `${Math.random() * 100}%`,
+        top: `-${Math.random() * 100}%`,
+        fontSize: `${Math.random() * 12 + 10}px`,
+        animationDuration: `${Math.random() * 10 + 10}s`,
+        animationDelay: `${Math.random() * 10}s`,
+      }}
+    >
+      {Math.random() > 0.5 ? "1" : "0"}
+    </div>
+  ))}
+
+</div>
       {/* Navbar */}
       <motion.nav
         initial={{ y: -80, opacity: 0 }}
