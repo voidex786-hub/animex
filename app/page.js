@@ -6,21 +6,25 @@ import { useEffect, useState } from "react"
 
 export default function Page() {
   const [animeList, setAnimeList] = useState([])
-  const [search, setSearch] = useState("")
+const [search, setSearch] = useState("")
+const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchTopAnime()
   }, [])
 
   async function fetchTopAnime() {
+    setLoading(true)
     const res = await fetch("https://api.jikan.moe/v4/top/anime")
 
     const data = await res.json()
 
     setAnimeList(data.data.slice(0, 10))
+    setLoading(false)
   }
 
   async function searchAnime(query) {
+    setLoading(true)
     setSearch(query)
 
     if (query.trim() === "") {
@@ -303,7 +307,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Trending Anime */}
+            {/* Trending Anime */}
       <section id="anime" className="py-32 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
 
@@ -370,33 +374,30 @@ export default function Page() {
                       {anime.title}
                     </h3>
 
+                    {/* Genres */}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {anime.genres?.slice(0, 2).map((genre) => (
+                        <span
+                          key={genre.mal_id}
+                          className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded-full"
+                        >
+                          {genre.name}
+                        </span>
+                      ))}
+                    </div>
+
                     <div className="flex items-center justify-between text-sm text-gray-400">
 
-  <p>
-    {anime.episodes || "?"} Episodes
-  </p>
+                      <p>
+                        {anime.episodes || "?"} Episodes
+                      </p>
 
-  <p className="text-purple-400">
-    {anime.status}
-  </p>
+                      <p className="text-purple-400">
+                        {anime.status}
+                      </p>
 
-</div>
+                    </div>
 
-{/* Genres */}
-<div className="flex flex-wrap gap-2 mt-4">
-
-  {anime.genres?.slice(0, 2).map((genre) => (
-
-    <span
-      key={genre.mal_id}
-      className="text-xs px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300"
-    >
-      {genre.name}
-    </span>
-
-  ))}
-
-</div>
                   </div>
 
                 </motion.div>
