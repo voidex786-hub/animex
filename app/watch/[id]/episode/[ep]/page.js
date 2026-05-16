@@ -27,12 +27,12 @@ export default async function EpisodePage({ params }) {
 <div className="w-full mb-12">
 
   <iframe
-    src={`https://vidsrc.me/embed/anime?mal=${anime.mal_id}&ep=${ep}`}
-    width="100%"
-    height="700"
-    allowFullScreen
-    className="rounded-3xl border border-white/10"
-  ></iframe>
+  src={`https://vidsrc.cc/v2/embed/anime/${anime.mal_id}/${ep}`}
+  width="100%"
+  height="700"
+  allowFullScreen
+  className="rounded-3xl border border-white/10"
+></iframe>
 
 </div>
 
