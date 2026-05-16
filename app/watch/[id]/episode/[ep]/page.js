@@ -23,28 +23,24 @@ export default async function EpisodePage({ params }) {
 
       <div className="max-w-7xl mx-auto">
 
-        {/* Fake Video Player */}
-        <div className="w-full h-[700px] rounded-3xl bg-[#111] border border-white/10 flex items-center justify-center mb-12">
+        {/* Real Video Player */}
+<div className="w-full mb-12">
 
-          <div className="text-center">
+  <iframe
+    src={`https://vidsrc.xyz/embed/anime/${anime.mal_id}/${ep}`}
+    width="100%"
+    height="700"
+    allowFullScreen
+    className="rounded-3xl border border-white/10"
+  ></iframe>
 
-            <h1 className="text-6xl font-bold mb-4">
-              Episode {ep}
-            </h1>
-
-            <p className="text-gray-400 text-xl">
-              {anime.title}
-            </p>
-
-          </div>
-
-        </div>
+</div>
 
         {/* Navigation */}
         <div className="flex gap-4 flex-wrap">
 
           {Number(ep) > 1 && (
-            <Link href={`/watch/${id}/episode/${Number(ep) - 1}`}>
+            <Link href={`/watch/${id}/ep/${Number(ep) - 1}`}>
 
               <button className="px-8 py-4 rounded-2xl bg-[#111] border border-white/10 hover:border-purple-500 transition">
                 ← Previous Episode
@@ -61,7 +57,7 @@ export default async function EpisodePage({ params }) {
 
           </Link>
 
-          <Link href={`/watch/${id}/episode/${Number(ep) + 1}`}>
+          <Link href={`/watch/${id}/ep/${Number(ep) + 1}`}>
 
             <button className="px-8 py-4 rounded-2xl bg-[#111] border border-white/10 hover:border-purple-500 transition">
               Next Episode →
