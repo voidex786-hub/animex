@@ -27,7 +27,7 @@ export default async function EpisodePage({ params }) {
 <div className="w-full mb-12">
 
   <iframe
-  src={`https://vidsrc.xyz/embed/anime/${id}/${ep}`}
+  src={`https://vidlink.pro/anime/${id}/${ep}`}
   width="100%"
   height="700"
   allowFullScreen
