@@ -27,7 +27,7 @@ export default async function EpisodePage({ params }) {
 <div className="w-full mb-12">
 
   <iframe
-  src={`https://megacloud.tv/embed-2/e-1/${id}?ep=${ep}`}
+  src={`https://vidlink.pro/anime/${id}/${ep}`}
   width="100%"
   height="700"
   allowFullScreen
