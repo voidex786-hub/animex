@@ -1,4 +1,5 @@
 import Link from "next/link"
+import AnimePlayer from "@/app/components/AnimePlayer"
 
 async function getAnime(id) {
   const res = await fetch(
@@ -18,6 +19,9 @@ export default async function EpisodePage({ params }) {
 
   const anime = await getAnime(id)
 
+  const videoSrc =
+  "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+  
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10">
 
@@ -25,15 +29,7 @@ export default async function EpisodePage({ params }) {
 
         {/* Real Video Player */}
 <div className="w-full mb-12">
-
-  <iframe
-  src={`https://vidsrc.xyz/embed/anime?mal=${id}&ep=${ep}`}
-  width="100%"
-  height="700"
-  allowFullScreen
-  className="rounded-3xl border border-white/10"
-/>
-
+  <AnimePlayer src={videoSrc} />
 </div>
 
         {/* Navigation */}
