@@ -12,15 +12,6 @@ async function getAnime(id) {
   }
 }
 
-function buildEmbedSlug(title) {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")   // strip special chars (colons, apostrophes, etc.)
-    .trim()
-    .replace(/\s+/g, "-")            // spaces → hyphens
-    .replace(/-+/g, "-")             // collapse double hyphens
-}
-
 export default async function EpisodePage({ params }) {
   const { id, ep } = await params
   const episodeNumber = Number(ep)
@@ -34,23 +25,18 @@ export default async function EpisodePage({ params }) {
     )
   }
 
-  const slug = buildEmbedSlug(anime.title)
 
   // Primary + fallback sources
   const sources = [
-    {
-      label: "Server 1",
-      url: `https://anime.autoembed.cc/embed/${slug}-episode-${episodeNumber}`,
-    },
-    {
-      label: "Server 2",
-      url: `https://anime.autoembed.cc/embed/${slug}-episode-${episodeNumber}?server=2`,
-    },
-    {
-      label: "Server 3",
-      url: `https://anime.autoembed.cc/embed/${slug}-episode-${episodeNumber}?server=3`,
-    },
-  ]
+  {
+    label: "Server 1",
+    url: `https://www.2embed.stream/embed/anime/${id}/${episodeNumber}`,
+  },
+  {
+    label: "Server 2",
+    url: `https://www.2embed.stream/embed/anime/${id}/${episodeNumber}?server=2`,
+  },
+]
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10">
