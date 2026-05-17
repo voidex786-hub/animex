@@ -1,65 +1,33 @@
-"use client"
-
-import { useState, useEffect } from "react"
 import Link from "next/link"
 
-export default function EpisodePage({ params }) {
-  const { id, ep } = params
+async function getAnime(id) {
+  const res = await fetch(`https://api.jikan.moe/v4/anime/${id}`, { cache: "no-store" })
+  const data = await res.json()
+  return data.data
+}
+
+export default async function EpisodePage({ params }) {
+  const { id, ep } = await params
   const episodeNumber = Number(ep)
-  const [streamUrl, setStreamUrl] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [animeTitle, setAnimeTitle] = useState("")
+  const anime = await getAnime(id)
 
-  useEffect(() => {
-    async function loadStream() {
-      try {
-        const jikanRes = await fetch(`https://api.jikan.moe/v4/anime/${id}`)
-        const jikanData = await jikanRes.json()
-        const title = jikanData.data.title
-        setAnimeTitle(title)
-
-        const slug = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-episode-${episodeNumber}-english-subbed`
-
-        // Call our own API route as proxy
-        const res = await fetch(`/api/stream?slug=${slug}&ep=${episodeNumber}`)
-        const data = await res.json()
-
-        if (data.dataId) {
-          setStreamUrl(`https://1anime.site/megaplay/stream/s-2/${data.dataId}/sub`)
-        }
-      } catch (e) {
-        console.error(e)
-      } finally {
-        setLoading(false)
-      }
-    }
-    loadStream()
-  }, [id, ep])
+  const slug = `${anime.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-episode-${episodeNumber}-english-subbed`
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-10">
       <div className="max-w-7xl mx-auto">
+
         <div className="w-full mb-12">
-          {loading ? (
-            <div className="flex items-center justify-center h-64 rounded-3xl border border-white/10 text-white/40">
-              Loading stream...
-            </div>
-          ) : streamUrl ? (
-            <div className="rounded-3xl overflow-hidden border border-white/10 w-full" style={{ aspectRatio: "16/9" }}>
-              <iframe
-                src={streamUrl}
-                className="w-full h-full"
-                frameBorder="0"
-                allowFullScreen
-                allow="autoplay; fullscreen"
-                title={`${animeTitle} Episode ${episodeNumber}`}
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-64 rounded-3xl border border-white/10 text-white/40">
-              Stream not available
-            </div>
-          )}
+          <div className="rounded-3xl overflow-hidden border border-white/10 w-full" style={{ aspectRatio: "16/9" }}>
+            <iframe
+              src={`https://aniwatch.co.at/${slug}/`}
+              className="w-full h-full"
+              frameBorder="0"
+              allowFullScreen
+              allow="autoplay; fullscreen"
+              title={`${anime.title} Episode ${episodeNumber}`}
+            />
+          </div>
         </div>
 
         <div className="flex gap-4 flex-wrap">
@@ -81,6 +49,7 @@ export default function EpisodePage({ params }) {
             </button>
           </Link>
         </div>
+
       </div>
     </main>
   )
