@@ -35,18 +35,19 @@ export default async function EpisodePage({ params }) {
   
   let dataId = null
   try {
+    const slug = `${anime.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-episode-${episodeNumber}-english-subbed`
     const searchRes = await fetch(
-      `https://aniwatch.co.at/wp-json/wp/v2/posts?search=${encodeURIComponent(anime.title + ' episode ' + episodeNumber)}&per_page=1`,
+      `https://aniwatch.co.at/wp-json/wp/v2/posts?slug=${slug}&_fields=id,slug,content`,
       {
         cache: "no-store",
         headers: {
           "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-          "Accept": "application/json",
-          "Referer": "https://www.google.com/"
+          "Accept": "application/json"
         }
       }
     )
     const posts = await searchRes.json()
+    console.log("slug searched:", slug)
     console.log("API status:", searchRes.status)
     console.log("Posts found:", posts?.length)
     if (posts && posts[0]) {
