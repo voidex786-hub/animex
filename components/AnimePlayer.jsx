@@ -28,7 +28,8 @@ export default function AnimePlayer({ streams }) {
       if (Hls.isSupported()) {
         const hls = new Hls()
         hlsRef.current = hls
-        hls.loadSource(url)
+        const proxyUrl = `https://animekai-api-production-16e5.up.railway.app/api/proxy?url=${encodeURIComponent(url)}`
+hls.loadSource(proxyUrl)
         hls.attachMedia(videoRef.current)
         hls.on(Hls.Events.ERROR, () => setError(true))
       } else if (videoRef.current.canPlayType("application/vnd.apple.mpegurl")) {
