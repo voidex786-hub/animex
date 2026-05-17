@@ -1,5 +1,4 @@
 import Link from "next/link"
-import EpisodePlayer from "@/components/EpisodePlayer"
 
 async function getAnime(id) {
   try {
