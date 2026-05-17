@@ -179,7 +179,7 @@ export default async function WatchPage({ params }) {
 
                   <Link
                     key={episode.mal_id}
-                    href={`/watch/${anime.mal_id}/episode/${episode.mal_id}`}
+                    href={`/watch/${anime.mal_id}/ep/${episode.mal_id}`}
                   >
 
                     <div className="bg-[#111] border border-white/10 rounded-2xl p-5 hover:border-purple-500 hover:bg-purple-500/10 transition duration-300">
