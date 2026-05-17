@@ -35,26 +35,34 @@ export default async function EpisodePage({ params }) {
   
   let dataId = null
   try {
-    const res = await fetch(`https://aniwatch.co.at/${episodeSlug}/`, { 
-      cache: "no-store",
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Referer": "https://www.google.com/"
+    const searchRes = await fetch(
+      `https://aniwatch.co.at/wp-json/wp/v2/posts?search=${encodeURIComponent(anime.title + ' episode ' + episodeNumber)}&per_page=1`,
+      {
+        cache: "no-store",
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+          "Accept": "application/json",
+          "Referer": "https://www.google.com/"
+        }
       }
-    })
-    const html = await res.text()
-    const regex = new RegExp(`data-number="${episodeNumber}"[^>]*data-id="(\\d+)"`)
-    const match = html.match(regex)
-    if (match) dataId = match[1]
+    )
+    const posts = await searchRes.json()
+    console.log("API status:", searchRes.status)
+    console.log("Posts found:", posts?.length)
+    if (posts && posts[0]) {
+      const content = posts[0].content?.rendered || ""
+      const regex = new RegExp(`data-number="${episodeNumber}"[^>]*data-id="(\\d+)"`)
+      const match = content.match(regex)
+      if (match) dataId = match[1]
+      if (!dataId) {
+        const idMatch = content.match(/data-id="(\d+)"/)
+        if (idMatch) dataId = idMatch[1]
+      }
+    }
+    console.log("dataId found:", dataId)
   } catch (e) {
-    console.log("FETCH ERROR:", e.message)
+    console.log("ERROR:", e.message)
   }
-
-  console.log("anime title:", anime.title)
-  console.log("slug tried:", episodeSlug)
-  console.log("dataId found:", dataId)
 
   const streamUrl = dataId
     ? `https://1anime.site/megaplay/stream/s-2/${dataId}/sub`
