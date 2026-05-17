@@ -37,11 +37,16 @@ export default async function EpisodePage({ params }) {
   try {
     const res = await fetch(`https://aniwatch.co.at/${episodeSlug}/`, { cache: "no-store" })
     const html = await res.text()
-    // Look for: data-number="1" data-id="6700"
     const regex = new RegExp(`data-number="${episodeNumber}"[^>]*data-id="(\\d+)"`)
     const match = html.match(regex)
     if (match) dataId = match[1]
-  } catch {}
+  } catch (e) {
+    console.log("FETCH ERROR:", e.message)
+  }
+
+  console.log("anime title:", anime.title)
+  console.log("slug tried:", episodeSlug)
+  console.log("dataId found:", dataId)
 
   const streamUrl = dataId
     ? `https://1anime.site/megaplay/stream/s-2/${dataId}/sub`
