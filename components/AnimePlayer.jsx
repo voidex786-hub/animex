@@ -62,7 +62,7 @@ export default function AnimePlayer({ animeTitle, episodeNumber }) {
     const url = streams[activeStream]
     if (!url || !videoRef.current) return
 
-    const proxyUrl = `${API}/api/proxy?url=${encodeURIComponent(url)}`
+    const proxyUrl = `https://m3u8-proxy-production-3b62.up.railway.app/m3u8-proxy?url=${encodeURIComponent(url)}&headers=${encodeURIComponent(JSON.stringify({"referer":"https://megaup.cc/"}))}`
 
     import("hls.js").then(({ default: Hls }) => {
       if (hlsRef.current) hlsRef.current.destroy()
