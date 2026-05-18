@@ -1,307 +1,188 @@
 import Link from "next/link"
 
 async function getAnime(id) {
-  const res = await fetch(
-    `https://api.jikan.moe/v4/anime/${id}`,
-    {
-      cache: "no-store",
-    }
-  )
-
-  const data = await res.json()
-
-  return data.data
+  try {
+    const res = await fetch(`https://api.jikan.moe/v4/anime/${id}`, { cache: "no-store" })
+    const data = await res.json()
+    return data.data
+  } catch { return null }
 }
 
 async function getRecommendations(id) {
-  const res = await fetch(
-    `https://api.jikan.moe/v4/anime/${id}/recommendations`,
-    {
-      cache: "no-store",
-    }
-  )
-
-  const data = await res.json()
-
-  return data.data
+  try {
+    const res = await fetch(`https://api.jikan.moe/v4/anime/${id}/recommendations`, { cache: "no-store" })
+    const data = await res.json()
+    return data.data
+  } catch { return [] }
 }
 
 async function getEpisodes(id) {
-  const res = await fetch(
-    `https://api.jikan.moe/v4/anime/${id}/episodes`,
-    {
-      cache: "no-store",
-    }
-  )
-
-  const data = await res.json()
-
-  return data.data
-}
-
-async function getCharacters(id) {
-  const res = await fetch(
-    `https://api.jikan.moe/v4/anime/${id}/characters`,
-    {
-      cache: "no-store",
-    }
-  )
-
-  const data = await res.json()
-
-  return data.data
+  try {
+    const res = await fetch(`https://api.jikan.moe/v4/anime/${id}/episodes`, { cache: "no-store" })
+    const data = await res.json()
+    return data.data
+  } catch { return [] }
 }
 
 export default async function WatchPage({ params }) {
   const { id } = await params
-
   const anime = await getAnime(id)
-
   const recommendations = await getRecommendations(id)
-
   const episodes = await getEpisodes(id)
 
-  const characters = await getCharacters(id)
+  if (!anime) return (
+    <main className="min-h-screen bg-black text-white flex items-center justify-center">
+      <p className="text-gray-400 text-xl">Anime not found.</p>
+    </main>
+  )
+
+  const episodeList = episodes?.length > 0
+    ? episodes
+    : Array.from({ length: anime.episodes || 12 }, (_, i) => ({
+        mal_id: i + 1,
+        title: `Episode ${i + 1}`
+      }))
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-10 overflow-hidden relative">
+    <main className="min-h-screen bg-[#0a0a0a] text-white">
 
-      {/* Background Glow */}
-      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-purple-600/20 blur-[180px] rounded-full pointer-events-none"></div>
+      {/* Main Layout: Player + Sidebar */}
+      <div className="flex flex-col lg:flex-row lg:h-screen">
 
-      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Left: Player + Info */}
+        <div className="flex-1 flex flex-col overflow-y-auto">
 
-        {/* Trailer */}
-        <div className="w-full mb-12">
-
-          {anime.trailer?.embed_url ? (
-
-            <iframe
-              src={anime.trailer.embed_url}
-              width="100%"
-              height="700"
-              allowFullScreen
-              className="rounded-3xl border border-white/10 shadow-[0_0_60px_rgba(168,85,247,0.25)]"
-            ></iframe>
-
-          ) : (
-
-            <div className="h-[700px] flex items-center justify-center bg-[#111] rounded-3xl border border-white/10">
-              <p className="text-gray-400 text-2xl">
-                No Trailer Available
-              </p>
-            </div>
-
-          )}
-
-        </div>
-
-        {/* Now Watching */}
-        <div className="mb-16">
-
-          <h2 className="text-5xl font-bold mb-4">
-            Now Watching
-          </h2>
-
-          <p className="text-gray-400 text-xl">
-            {anime.title}
-          </p>
-
-        </div>
-
-        {/* Anime Info */}
-        <div className="grid md:grid-cols-3 gap-10 mb-24">
-
-          {/* Poster */}
-          <div>
-
-            <img
-              src={anime.images.jpg.large_image_url}
-              alt={anime.title}
-              className="rounded-3xl w-full border border-white/10 shadow-[0_0_40px_rgba(168,85,247,0.15)]"
-            />
-
+          {/* Player */}
+          <div className="w-full bg-black" style={{ aspectRatio: "16/9" }}>
+            <Link href={`/watch/${anime.mal_id}/ep/1`}>
+              <div className="w-full h-full relative group cursor-pointer">
+                <img
+                  src={anime.images.jpg.large_image_url}
+                  alt={anime.title}
+                  className="w-full h-full object-cover opacity-50"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-20 h-20 rounded-full bg-purple-600/90 flex items-center justify-center text-3xl shadow-[0_0_40px_rgba(168,85,247,0.6)] group-hover:scale-110 transition">
+                    ▶
+                  </div>
+                </div>
+                <div className="absolute bottom-4 left-4">
+                  <p className="text-white/60 text-xs uppercase tracking-widest mb-1">Now Playing</p>
+                  <p className="text-white font-bold text-lg">{anime.title} — Episode 1</p>
+                </div>
+              </div>
+            </Link>
           </div>
 
-          {/* Details */}
-          <div className="md:col-span-2">
+          {/* Below Player: Anime Info */}
+          <div className="p-6 border-t border-white/5">
 
-            <h1 className="text-5xl font-bold mb-6">
-              {anime.title}
-            </h1>
-
-            <div className="flex gap-6 flex-wrap text-lg mb-8">
-
-              <p className="text-purple-400">
-                ⭐ {anime.score || "N/A"}
-              </p>
-
-              <p>
-                {anime.episodes || "?"} Episodes
-              </p>
-
-              <p>
-                {anime.status}
-              </p>
-
+            {/* Anime row */}
+            <div className="flex gap-5 mb-6">
+              <img
+                src={anime.images.jpg.image_url}
+                alt={anime.title}
+                className="w-16 h-20 object-cover rounded-xl border border-white/10 flex-shrink-0"
+              />
+              <div>
+                <h1 className="text-xl font-bold mb-2">{anime.title}</h1>
+                <div className="flex gap-3 text-xs text-gray-400 flex-wrap mb-3">
+                  <span>TV</span>
+                  <span>•</span>
+                  <span>{anime.status}</span>
+                  <span>•</span>
+                  <span>{anime.year || "N/A"}</span>
+                  <span>•</span>
+                  <span>⭐ {anime.score || "N/A"}</span>
+                  <span>•</span>
+                  <span>{anime.episodes || "?"} Episodes</span>
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  {anime.genres?.map((genre) => (
+                    <span key={genre.mal_id} className="px-3 py-1 rounded-full bg-purple-600/20 text-purple-300 text-xs border border-purple-500/20">
+                      {genre.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            <p className="text-gray-300 leading-8 mb-10">
+            {/* Synopsis */}
+            <p className="text-gray-400 text-sm leading-7 line-clamp-3 mb-8">
               {anime.synopsis}
             </p>
 
-            {/* Genres */}
-            <div className="flex gap-4 flex-wrap mb-12">
-
-              {anime.genres.map((genre) => (
-
-                <div
-                  key={genre.mal_id}
-                  className="px-4 py-2 rounded-full bg-purple-600"
-                >
-                  {genre.name}
+            {/* Recommendations */}
+            {recommendations?.length > 0 && (
+              <div>
+                <h2 className="text-lg font-bold mb-4">Recommendations</h2>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  {recommendations.slice(0, 12).map((item) => (
+                    <Link key={item.entry.mal_id} href={`/anime/${item.entry.mal_id}`}>
+                      <div className="group bg-[#111] rounded-xl overflow-hidden border border-white/5 hover:border-purple-500 transition hover:scale-105">
+                        <img
+                          src={item.entry.images.jpg.large_image_url}
+                          alt={item.entry.title}
+                          className="w-full h-28 object-cover group-hover:scale-110 transition duration-500"
+                        />
+                        <div className="p-2">
+                          <p className="text-xs font-semibold line-clamp-2 text-gray-300">{item.entry.title}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
+              </div>
+            )}
 
-              ))}
+          </div>
+        </div>
 
-            </div>
+        {/* Right: Episode Sidebar */}
+        <div className="w-full lg:w-[360px] bg-[#0f0f0f] border-l border-white/5 flex flex-col lg:h-screen">
 
-            {/* Episodes */}
+          {/* Header */}
+          <div className="p-4 border-b border-white/5 flex items-center justify-between">
             <div>
-
-              <h2 className="text-3xl font-bold mb-6">
-                Episodes
-              </h2>
-
-              <div className="grid md:grid-cols-2 gap-4">
-
-                {episodes?.map((episode) => (
-
-                  <Link
-                    key={episode.mal_id}
-                    href={`/watch/${anime.mal_id}/ep/${episode.mal_id}`}
-                  >
-
-                    <div className="bg-[#111] border border-white/10 rounded-2xl p-5 hover:border-purple-500 hover:bg-purple-500/10 transition duration-300">
-
-                      <h3 className="font-bold text-lg mb-2">
-                        Episode {episode.mal_id}
-                      </h3>
-
-                      <p className="text-gray-400 line-clamp-2">
-                        {episode.title}
-                      </p>
-
-                    </div>
-
-                  </Link>
-
-                ))}
-
-              </div>
-
+              <h2 className="text-base font-bold">Episodes</h2>
+              <p className="text-gray-500 text-xs">{episodeList.length} Episodes</p>
             </div>
-
-          </div>
-        </div>
-
-        {/* Characters */}
-        <div className="mb-24">
-
-          <h2 className="text-4xl font-bold mb-10">
-            Characters
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-            {characters?.slice(0, 8).map((character) => (
-
-              <div
-                key={character.character.mal_id}
-                className="bg-[#111] border border-white/10 rounded-3xl p-5 flex gap-5 hover:border-purple-500 transition duration-300"
-              >
-
-                {/* Character Image */}
-                <img
-                  src={character.character.images.jpg.image_url}
-                  alt={character.character.name}
-                  className="w-24 h-24 object-cover rounded-2xl"
-                />
-
-                {/* Info */}
-                <div className="flex-1">
-
-                  <h3 className="text-xl font-bold mb-2">
-                    {character.character.name}
-                  </h3>
-
-                  <p className="text-purple-400 mb-2">
-                    {character.role}
-                  </p>
-
-                  <p className="text-gray-400 text-sm">
-                    Voice Actor:
-                    {" "}
-                    {character.voice_actors?.[0]?.person?.name || "Unknown"}
-                  </p>
-
-                </div>
-
-              </div>
-
-            ))}
-
           </div>
 
-        </div>
+          {/* Scrollable Episode List */}
+          <div className="flex-1 overflow-y-auto">
+            {episodeList.map((episode) => (
+              <Link key={episode.mal_id} href={`/watch/${anime.mal_id}/ep/${episode.mal_id}`}>
+                <div className="flex gap-3 p-4 hover:bg-purple-500/10 border-b border-white/5 transition cursor-pointer group">
 
-        {/* Related Anime */}
-        <div>
-
-          <h2 className="text-4xl font-bold mb-10">
-            You May Also Like
-          </h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-
-            {recommendations?.slice(0, 10).map((item) => (
-
-              <Link
-                key={item.entry.mal_id}
-                href={`/anime/${item.entry.mal_id}`}
-              >
-
-                <div className="group bg-[#111] rounded-3xl overflow-hidden border border-white/10 hover:border-purple-500 transition duration-300 hover:scale-105 hover:shadow-[0_0_40px_rgba(168,85,247,0.25)]">
-
-                  <div className="overflow-hidden">
-
-                    <img
-                      src={item.entry.images.jpg.large_image_url}
-                      alt={item.entry.title}
-                      className="w-full h-72 object-cover group-hover:scale-110 transition duration-500"
-                    />
-
+                  {/* Number */}
+                  <div className="w-11 h-11 rounded-xl bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-sm font-bold text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition flex-shrink-0">
+                    {episode.mal_id}
                   </div>
 
-                  <div className="p-4">
+                  {/* Info */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-center">
+                    <p className="font-semibold text-sm line-clamp-1 group-hover:text-purple-400 transition">
+                      {episode.title || `Episode ${episode.mal_id}`}
+                    </p>
+                    <p className="text-gray-500 text-xs mt-0.5">
+                      Episode {episode.mal_id}
+                    </p>
+                  </div>
 
-                    <h3 className="font-bold line-clamp-2">
-                      {item.entry.title}
-                    </h3>
-
+                  {/* Play */}
+                  <div className="opacity-0 group-hover:opacity-100 transition text-purple-400 flex items-center text-xs">
+                    ▶
                   </div>
 
                 </div>
-
               </Link>
-
             ))}
-
           </div>
 
         </div>
-
       </div>
+
     </main>
   )
 }
