@@ -1,4 +1,5 @@
 import Link from "next/link"
+import AnimePlayer from "@/components/AnimePlayer"
 
 async function getAnime(id) {
   try {
@@ -52,27 +53,13 @@ export default async function WatchPage({ params }) {
         {/* Left: Player + Info */}
         <div className="flex-1 flex flex-col overflow-y-auto">
 
-          {/* Player */}
-          <div className="w-full bg-black" style={{ aspectRatio: "16/9" }}>
-            <Link href={`/watch/${anime.mal_id}/ep/1`}>
-              <div className="w-full h-full relative group cursor-pointer">
-                <img
-                  src={anime.images.jpg.large_image_url}
-                  alt={anime.title}
-                  className="w-full h-full object-cover opacity-50"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-20 h-20 rounded-full bg-purple-600/90 flex items-center justify-center text-3xl shadow-[0_0_40px_rgba(168,85,247,0.6)] group-hover:scale-110 transition">
-                    ▶
-                  </div>
-                </div>
-                <div className="absolute bottom-4 left-4">
-                  <p className="text-white/60 text-xs uppercase tracking-widest mb-1">Now Playing</p>
-                  <p className="text-white font-bold text-lg">{anime.title} — Episode 1</p>
-                </div>
-              </div>
-            </Link>
-          </div>
+          {/* Player - episode 1 plays directly */}
+          <AnimePlayer
+            malId={id}
+            episodeNumber={1}
+            animeTitle={anime.title}
+            animeImage={anime.images.jpg.large_image_url}
+          />
 
           {/* Below Player: Anime Info */}
           <div className="p-6 border-t border-white/5">
@@ -142,11 +129,9 @@ export default async function WatchPage({ params }) {
         <div className="w-full lg:w-[360px] bg-[#0f0f0f] border-l border-white/5 flex flex-col lg:h-screen">
 
           {/* Header */}
-          <div className="p-4 border-b border-white/5 flex items-center justify-between">
-            <div>
-              <h2 className="text-base font-bold">Episodes</h2>
-              <p className="text-gray-500 text-xs">{episodeList.length} Episodes</p>
-            </div>
+          <div className="p-4 border-b border-white/5">
+            <h2 className="text-base font-bold">Episodes</h2>
+            <p className="text-gray-500 text-xs">{episodeList.length} Episodes</p>
           </div>
 
           {/* Scrollable Episode List */}
@@ -155,22 +140,17 @@ export default async function WatchPage({ params }) {
               <Link key={episode.mal_id} href={`/watch/${anime.mal_id}/ep/${episode.mal_id}`}>
                 <div className="flex gap-3 p-4 hover:bg-purple-500/10 border-b border-white/5 transition cursor-pointer group">
 
-                  {/* Number */}
                   <div className="w-11 h-11 rounded-xl bg-[#1a1a1a] border border-white/10 flex items-center justify-center text-sm font-bold text-purple-400 group-hover:bg-purple-600 group-hover:text-white transition flex-shrink-0">
                     {episode.mal_id}
                   </div>
 
-                  {/* Info */}
                   <div className="flex-1 min-w-0 flex flex-col justify-center">
                     <p className="font-semibold text-sm line-clamp-1 group-hover:text-purple-400 transition">
                       {episode.title || `Episode ${episode.mal_id}`}
                     </p>
-                    <p className="text-gray-500 text-xs mt-0.5">
-                      Episode {episode.mal_id}
-                    </p>
+                    <p className="text-gray-500 text-xs mt-0.5">Episode {episode.mal_id}</p>
                   </div>
 
-                  {/* Play */}
                   <div className="opacity-0 group-hover:opacity-100 transition text-purple-400 flex items-center text-xs">
                     ▶
                   </div>
