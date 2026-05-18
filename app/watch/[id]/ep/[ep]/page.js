@@ -1,71 +1,195 @@
-import AnimePlayer from "@/components/AnimePlayer"
+"use client"
+
+import { useState, useEffect } from "react"
 import Link from "next/link"
+import AnimePlayer from "@/components/AnimePlayer"
 
-async function getAnime(id) {
-  try {
-    const res = await fetch(`https://api.jikan.moe/v4/anime/${id}`, { cache: "no-store" })
-    const data = await res.json()
-    return data.data
-  } catch {
-    return null
-  }
-}
+export default function WatchPage({ params }) {
+  const [anime, setAnime] = useState(null)
+  const [episodes, setEpisodes] = useState([])
+  const [recommendations, setRecommendations] = useState([])
+  const [activeEp, setActiveEp] = useState(1)
+  const [loading, setLoading] = useState(true)
 
-export default async function EpisodePage({ params }) {
-  const { id, ep } = await params
-  const episodeNumber = Number(ep)
+  const id = params.id
 
-  const anime = await getAnime(id)
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true)
+      try {
+        const [animeRes, epRes, recRes] = await Promise.all([
+          fetch(`https://api.jikan.moe/v4/anime/${id}`),
+          fetch(`https://api.jikan.moe/v4/anime/${id}/episodes`),
+          fetch(`https://api.jikan.moe/v4/anime/${id}/recommendations`),
+        ])
+        const [animeData, epData, recData] = await Promise.all([
+          animeRes.json(),
+          epRes.json(),
+          recRes.json(),
+        ])
+        setAnime(animeData.data)
+        setRecommendations(recData.data || [])
+
+        const eps = epData.data?.length > 0
+          ? epData.data
+          : Array.from({ length: animeData.data?.episodes || 12 }, (_, i) => ({
+              mal_id: i + 1,
+              title: `Episode ${i + 1}`,
+            }))
+        setEpisodes(eps)
+      } catch (e) {
+        console.error(e)
+      }
+      setLoading(false)
+    }
+    fetchData()
+  }, [id])
+
+  if (loading) return (
+    <main className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
+      <div className="w-10 h-10 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
+    </main>
+  )
+
   if (!anime) return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center">
+    <main className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
       <p className="text-gray-400 text-xl">Anime not found.</p>
     </main>
   )
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-10 relative">
+    <main className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="flex flex-col lg:flex-row lg:h-screen">
 
-      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-purple-600/20 blur-[180px] rounded-full pointer-events-none"></div>
+        {/* Left: Player + Info */}
+        <div className="flex-1 flex flex-col overflow-y-auto">
 
-      <div className="max-w-7xl mx-auto relative z-10">
+          <AnimePlayer
+            malId={id}
+            episodeNumber={activeEp}
+            animeTitle={anime.title}
+            animeImage={anime.images.jpg.large_image_url}
+          />
 
-        <div className="mb-6">
-          <Link href={`/watch/${id}`}>
-            <span className="text-gray-400 hover:text-purple-400 transition text-sm">
-              ← Back to {anime.title}
-            </span>
-          </Link>
-          <h1 className="text-3xl font-bold mt-2">
-            {anime.title}{" "}
-            <span className="text-purple-400">— Episode {episodeNumber}</span>
-          </h1>
+          {/* Prev / Next buttons */}
+          <div className="flex gap-3 px-6 pt-4">
+            <button
+              onClick={() => setActiveEp((e) => Math.max(1, e - 1))}
+              disabled={activeEp === 1}
+              className="px-5 py-2 rounded-xl bg-[#111] border border-white/10 hover:border-purple-500 transition text-sm disabled:opacity-30"
+            >
+              ← Prev
+            </button>
+            <button
+              onClick={() => setActiveEp((e) => Math.min(episodes.length, e + 1))}
+              disabled={activeEp === episodes.length}
+              className="px-5 py-2 rounded-xl bg-[#111] border border-white/10 hover:border-purple-500 transition text-sm disabled:opacity-30"
+            >
+              Next →
+            </button>
+          </div>
+
+          {/* Anime Info */}
+          <div className="p-6 border-t border-white/5 mt-4">
+            <div className="flex gap-5 mb-6">
+              <img
+                src={anime.images.jpg.image_url}
+                alt={anime.title}
+                className="w-16 h-20 object-cover rounded-xl border border-white/10 flex-shrink-0"
+              />
+              <div>
+                <h1 className="text-xl font-bold mb-2">{anime.title}</h1>
+                <div className="flex gap-3 text-xs text-gray-400 flex-wrap mb-3">
+                  <span>TV</span>
+                  <span>•</span>
+                  <span>{anime.status}</span>
+                  <span>•</span>
+                  <span>{anime.year || "N/A"}</span>
+                  <span>•</span>
+                  <span>⭐ {anime.score || "N/A"}</span>
+                  <span>•</span>
+                  <span>{anime.episodes || "?"} Episodes</span>
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  {anime.genres?.map((genre) => (
+                    <span key={genre.mal_id} className="px-3 py-1 rounded-full bg-purple-600/20 text-purple-300 text-xs border border-purple-500/20">
+                      {genre.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <p className="text-gray-400 text-sm leading-7 line-clamp-3 mb-8">
+              {anime.synopsis}
+            </p>
+
+            {/* Recommendations */}
+            {recommendations?.length > 0 && (
+              <div>
+                <h2 className="text-lg font-bold mb-4">Recommendations</h2>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  {recommendations.slice(0, 12).map((item) => (
+                    <Link key={item.entry.mal_id} href={`/anime/${item.entry.mal_id}`}>
+                      <div className="group bg-[#111] rounded-xl overflow-hidden border border-white/5 hover:border-purple-500 transition hover:scale-105">
+                        <img
+                          src={item.entry.images.jpg.large_image_url}
+                          alt={item.entry.title}
+                          className="w-full h-28 object-cover group-hover:scale-110 transition duration-500"
+                        />
+                        <div className="p-2">
+                          <p className="text-xs font-semibold line-clamp-2 text-gray-300">{item.entry.title}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
-        <AnimePlayer
-  malId={id}
-  episodeNumber={episodeNumber}
-  animeTitle={anime.title}
-  animeImage={anime.images.jpg.large_image_url}
-/>
+        {/* Right: Episode Sidebar */}
+        <div className="w-full lg:w-[360px] bg-[#0f0f0f] border-l border-white/5 flex flex-col lg:h-screen">
+          <div className="p-4 border-b border-white/5">
+            <h2 className="text-base font-bold">Episodes</h2>
+            <p className="text-gray-500 text-xs">{episodes.length} Episodes</p>
+          </div>
 
-        <div className="flex gap-4 flex-wrap mt-8">
-          {episodeNumber > 1 && (
-            <Link href={`/watch/${id}/ep/${episodeNumber - 1}`}>
-              <button className="px-8 py-4 rounded-2xl bg-[#111] border border-white/10 hover:border-purple-500 transition">
-                ← Previous Episode
-              </button>
-            </Link>
-          )}
-          <Link href={`/watch/${id}`}>
-            <button className="px-8 py-4 rounded-2xl bg-purple-600 hover:bg-purple-500 transition">
-              All Episodes
-            </button>
-          </Link>
-          <Link href={`/watch/${id}/ep/${episodeNumber + 1}`}>
-            <button className="px-8 py-4 rounded-2xl bg-[#111] border border-white/10 hover:border-purple-500 transition">
-              Next Episode →
-            </button>
-          </Link>
+          <div className="flex-1 overflow-y-auto">
+            {episodes.map((episode) => (
+              <div
+                key={episode.mal_id}
+                onClick={() => setActiveEp(episode.mal_id)}
+                className={`flex gap-3 p-4 border-b border-white/5 transition cursor-pointer group ${
+                  activeEp === episode.mal_id
+                    ? "bg-purple-600/20 border-l-2 border-l-purple-500"
+                    : "hover:bg-purple-500/10"
+                }`}
+              >
+                <div className={`w-11 h-11 rounded-xl border flex items-center justify-center text-sm font-bold transition flex-shrink-0 ${
+                  activeEp === episode.mal_id
+                    ? "bg-purple-600 border-purple-500 text-white"
+                    : "bg-[#1a1a1a] border-white/10 text-purple-400 group-hover:bg-purple-600 group-hover:text-white"
+                }`}>
+                  {episode.mal_id}
+                </div>
+
+                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                  <p className={`font-semibold text-sm line-clamp-1 transition ${
+                    activeEp === episode.mal_id ? "text-purple-400" : "group-hover:text-purple-400"
+                  }`}>
+                    {episode.title || `Episode ${episode.mal_id}`}
+                  </p>
+                  <p className="text-gray-500 text-xs mt-0.5">Episode {episode.mal_id}</p>
+                </div>
+
+                {activeEp === episode.mal_id && (
+                  <div className="text-purple-400 flex items-center text-xs">▶</div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>
