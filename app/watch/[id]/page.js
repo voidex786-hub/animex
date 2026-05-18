@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, use } from "react"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import AnimePlayer from "@/components/AnimePlayer"
 
@@ -10,7 +11,9 @@ export default function WatchPage({ params }) {
   const [anime, setAnime] = useState(null)
   const [episodes, setEpisodes] = useState([])
   const [recommendations, setRecommendations] = useState([])
-  const [activeEp, setActiveEp] = useState(1)
+  const searchParams = useSearchParams()
+const initialEp = Number(searchParams.get("ep")) || 1
+const [activeEp, setActiveEp] = useState(initialEp)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
