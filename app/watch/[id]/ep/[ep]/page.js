@@ -41,7 +41,12 @@ export default async function EpisodePage({ params }) {
           </h1>
         </div>
 
-        <AnimePlayer malId={id} episodeNumber={episodeNumber} />
+        <AnimePlayer
+  malId={id}
+  episodeNumber={episodeNumber}
+  animeTitle={anime.title}
+  animeImage={anime.images.jpg.large_image_url}
+/>
 
         <div className="flex gap-4 flex-wrap mt-8">
           {episodeNumber > 1 && (

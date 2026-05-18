@@ -1,9 +1,21 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
-export default function AnimePlayer({ malId, episodeNumber }) {
+export default function AnimePlayer({ malId, episodeNumber, animeTitle, animeImage }) {
   const [active, setActive] = useState("sub")
+
+  // Save progress to localStorage
+  useEffect(() => {
+    const saved = {
+      animeId: malId,
+      animeTitle: animeTitle,
+      image: animeImage,
+      episode: episodeNumber,
+      timestamp: Date.now()
+    }
+    localStorage.setItem("continueWatching", JSON.stringify(saved))
+  }, [malId, episodeNumber])
 
   const sources = [
     { key: "sub", label: "Sub" },
@@ -12,7 +24,6 @@ export default function AnimePlayer({ malId, episodeNumber }) {
 
   return (
     <div>
-      {/* Server selector */}
       <div className="flex gap-3 mb-4">
         {sources.map((s) => (
           <button
@@ -29,7 +40,6 @@ export default function AnimePlayer({ malId, episodeNumber }) {
         ))}
       </div>
 
-      {/* Player */}
       <div
         className="rounded-3xl overflow-hidden border border-white/10 w-full bg-black"
         style={{ aspectRatio: "16/9" }}

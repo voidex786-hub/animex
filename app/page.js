@@ -332,17 +332,14 @@ const [continueAnime, setContinueAnime] = useState(null)
       </section>
 {/* Continue Watching */}
 {continueAnime && (
-
   <section className="py-20 px-6 relative z-10">
-
     <div className="max-w-7xl mx-auto">
 
       <h2 className="text-4xl font-bold mb-10">
         Continue Watching
       </h2>
 
-      <Link href={`/watch/${continueAnime.animeId}`}>
-
+      <Link href={`/watch/${continueAnime.animeId}/ep/${continueAnime.episode}`}>
         <div className="bg-[#0d0d0d] border border-white/10 rounded-3xl overflow-hidden md:flex hover:border-purple-500/40 transition cursor-pointer">
 
           <img
@@ -358,7 +355,7 @@ const [continueAnime, setContinueAnime] = useState(null)
             </h3>
 
             <p className="text-purple-400 text-lg mb-6">
-              Continue from Episode {continueAnime.episode}
+              Episode {continueAnime.episode}
             </p>
 
             <button className="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-500 w-fit">
@@ -368,13 +365,10 @@ const [continueAnime, setContinueAnime] = useState(null)
           </div>
 
         </div>
-
       </Link>
 
     </div>
-
   </section>
-
 )}
       {/* Features */}
       <section id="features" className="py-32 px-6 relative z-10">
