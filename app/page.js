@@ -339,7 +339,7 @@ const [continueAnime, setContinueAnime] = useState(null)
         Continue Watching
       </h2>
 
-      <Link href={`/watch/${continueAnime.animeId}/ep/${continueAnime.episode}`}>
+      <Link href={`/watch/${continueAnime.animeId}`}>
         <div className="bg-[#0d0d0d] border border-white/10 rounded-3xl overflow-hidden md:flex hover:border-purple-500/40 transition cursor-pointer">
 
           <img
