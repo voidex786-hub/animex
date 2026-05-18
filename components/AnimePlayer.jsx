@@ -1,10 +1,9 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 
 export default function AnimePlayer({ malId, episodeNumber, animeTitle, animeImage }) {
   const [active, setActive] = useState("sub")
-  const savedTime = useRef(0)
 
   // Save progress to localStorage
   useEffect(() => {
@@ -17,25 +16,6 @@ export default function AnimePlayer({ malId, episodeNumber, animeTitle, animeIma
     }
     localStorage.setItem("continueWatching", JSON.stringify(saved))
   }, [malId, episodeNumber])
-
-  // Listen for time updates from iframe
-  useEffect(() => {
-    function handleMessage(event) {
-      if (event.data?.currentTime) {
-        savedTime.current = event.data.currentTime
-
-        // Update saved time in localStorage
-        const existing = JSON.parse(localStorage.getItem("continueWatching") || "{}")
-        localStorage.setItem("continueWatching", JSON.stringify({
-          ...existing,
-          currentTime: event.data.currentTime
-        }))
-      }
-    }
-
-    window.addEventListener("message", handleMessage)
-    return () => window.removeEventListener("message", handleMessage)
-  }, [])
 
   const sources = [
     { key: "sub", label: "Sub" },
