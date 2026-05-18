@@ -1,17 +1,17 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import Link from "next/link"
 import AnimePlayer from "@/components/AnimePlayer"
 
 export default function WatchPage({ params }) {
+  const { id } = use(params)
+
   const [anime, setAnime] = useState(null)
   const [episodes, setEpisodes] = useState([])
   const [recommendations, setRecommendations] = useState([])
   const [activeEp, setActiveEp] = useState(1)
   const [loading, setLoading] = useState(true)
-
-  const id = params.id
 
   useEffect(() => {
     async function fetchData() {
@@ -71,7 +71,7 @@ export default function WatchPage({ params }) {
             animeImage={anime.images.jpg.large_image_url}
           />
 
-          {/* Prev / Next buttons */}
+          {/* Prev / Next */}
           <div className="flex gap-3 px-6 pt-4">
             <button
               onClick={() => setActiveEp((e) => Math.max(1, e - 1))}
@@ -124,7 +124,6 @@ export default function WatchPage({ params }) {
               {anime.synopsis}
             </p>
 
-            {/* Recommendations */}
             {recommendations?.length > 0 && (
               <div>
                 <h2 className="text-lg font-bold mb-4">Recommendations</h2>
